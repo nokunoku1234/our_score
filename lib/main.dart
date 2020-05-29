@@ -37,25 +37,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Icon(Icons.check_box),
+        title: Text('Simple Resumaker'),
       ),
       body: Center(
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('3'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            Text('Simple Resumaker Starts Here'),
+
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }

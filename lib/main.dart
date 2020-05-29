@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_resumaker/pages/add_pdf_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -47,6 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage()));
+        },
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
       ),
     );
   }

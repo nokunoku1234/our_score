@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_resumaker/pages/create_pdf.dart';
+import 'package:simple_resumaker/pages/pdf_view.dart';
 
 class AddPdfPage extends StatefulWidget {
   @override
@@ -27,7 +29,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
           ),
           RaisedButton(
             child: Text('Create PDF'),
-            onPressed: () {},
+            onPressed: () async{
+              String _filePath = await CreatePdf.createPdfA4(txtController.text, txtController2.text);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
+            },
           ),
         ],
       ),

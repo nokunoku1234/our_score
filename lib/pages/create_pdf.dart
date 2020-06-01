@@ -24,11 +24,11 @@ class CreatePdf {
 
     pdf.addPage(
       MultiPage(
-        margin: EdgeInsets.symmetric(horizontal: 60.0, vertical: 50.0),
+        margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 50.0),
         pageFormat: PdfPageFormat.a4,
         orientation: PageOrientation.portrait,
         header: (Context context) {
-          if (context.pageNumber == 0) {
+          if (context.pageNumber == 1) {
             return null;
           }
           return Container(
@@ -46,11 +46,44 @@ class CreatePdf {
           );
         },
         build: (Context context) => <Widget>[
-          Container(
-            child: Text(text1, style: TextStyle(font: font)),
-          ),
-          Container(
-            child: Text(text2, style: TextStyle(font: font)),
+          ListView.builder(
+            itemBuilder: (Context context, int i) {
+              return Column(
+                children: [
+                  Row(
+                    children: [
+                      ListView.builder(
+                        direction: Axis.horizontal,
+                        itemBuilder: (Context context, int i) {
+                          return ListView.builder(
+                              itemBuilder: (Context context, int i) {
+                                return Container(
+                                  height: 3 * PdfPageFormat.mm,
+                                  width: 45 * PdfPageFormat.mm,
+                                  decoration: BoxDecoration(
+                                    border: BoxBorder(
+                                      top: true,
+                                      right: true,
+                                      bottom: true,
+                                      left: true,
+                                    ),
+                                  ),
+                                );
+                              },
+                              itemCount: 4
+                          );
+                        },
+                        itemCount: 4
+                      )
+                    ]
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(27.0),
+                  ),
+                ]
+              );
+            },
+            itemCount: 8
           )
         ],
       ),

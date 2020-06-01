@@ -93,16 +93,22 @@ class _AddPdfPageState extends State<AddPdfPage> {
           children: <Widget>[
             Expanded(
               flex: 1,
-              child: Container(
-                width: width / 2,
-                child: TextField()
+              child: Padding(
+                padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
+                child: Container(
+                  width: width / 2,
+                  child: TextField()
+                ),
               ),
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                width: width / 2,
-                child: TextField()
+              child: Padding(
+                padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
+                child: Container(
+                  width: width / 2,
+                  child: TextField()
+                ),
               ),
             ),
           ],

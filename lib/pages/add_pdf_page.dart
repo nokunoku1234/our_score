@@ -24,7 +24,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: buildBody(),
+        child: Column(
+          children: <Widget>[
+            buildTitle(),
+            buildBars(),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -37,7 +42,28 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
-  Widget buildBody() {
+  Row buildTitle() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Expanded(flex: 1, child: Container()),
+        Expanded(
+          flex: 1,
+          child: Container(
+            width: 100,
+            child: Center(child: Text(
+              'タイトル',
+              style: TextStyle(fontSize: 25),
+              )
+            )
+          )
+        ),
+        Expanded(flex: 1, child: Container(child: Center(child: Text('key = C')))),
+      ],
+    );
+  }
+
+  Widget buildBars() {
     int numberOfRow = 4;
 
     List<Widget> _listColumn = [];
@@ -47,6 +73,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
       if((i + 1) % numberOfRow == 1) {
         _listCache.add(
           Container(
+            height: 28,
             width: 40,
             child: TextField(),
           )
@@ -69,7 +96,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
       } else if(i + 1 == barList.length){
         for(int j = 0; j < numberOfRow - (i + 1) % numberOfRow; j++) {
           _listCache.add(
-              Expanded(child: Container(),)
+            Expanded(child: Container(),)
           );
         }
         _listColumn.add(Row(children: _listCache,));
@@ -96,6 +123,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
               child: Padding(
                 padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
                 child: Container(
+                  height: 20,
                   width: width / 2,
                   child: TextField()
                 ),
@@ -106,6 +134,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
               child: Padding(
                 padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
                 child: Container(
+                  height: 20,
                   width: width / 2,
                   child: TextField()
                 ),
@@ -159,7 +188,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(25.0),
+          padding: EdgeInsets.all(11.0),
         ),
       ],
     );

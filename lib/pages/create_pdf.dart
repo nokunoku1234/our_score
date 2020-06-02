@@ -5,10 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
+import 'package:simple_resumaker/model/model.dart';
 
 class CreatePdf {
-  static Future<String> createPdfA4(List<String> firstChord, List<String> laterChord, String title, String musicKey, List<String> labelName) async {
+  static Future<String> createPdfA4(List<SaveData> saveDataList, String title, String musicKey) async {
     final Document pdf = Document();
+
 
     Future<dynamic> getFontData() async {
       final ByteData bytes = await rootBundle.load('assets/fonts/ipaexm.ttf');
@@ -48,7 +50,7 @@ class CreatePdf {
         build: (Context context) => <Widget>[
           buildTitle(font, title, musicKey),
           Padding(padding: EdgeInsets.all(20.0)),
-          buildBars(firstChord: firstChord, laterChord: laterChord, labelName: labelName)
+          buildBars(saveDataList)
         ],
       ),
     );
@@ -63,7 +65,7 @@ class CreatePdf {
     return _filePath;
   }
 
-  static Column buildColumn({double width, double height, int barNumber, List<String> firstChord, List<String> laterChord}) {
+  static Column buildColumn({double width, double height, int barNumber, List<SaveData> saveData}) {
     return Column(
           children: [
             Container(
@@ -77,7 +79,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 30),
-                        child: Text(firstChord[barNumber], style: TextStyle(fontSize: 20))
+                        child: Text(saveData[barNumber].firstChord, style: TextStyle(fontSize: 20))
                       ),
                     ),
                   ),
@@ -87,7 +89,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 30),
-                        child: Text(laterChord[barNumber], style: TextStyle(fontSize: 20))
+                        child: Text(saveData[barNumber].laterChord, style: TextStyle(fontSize: 20))
                       ),
                     ),
                   ),
@@ -173,13 +175,13 @@ class CreatePdf {
     );
   }
 
-  static Widget buildBars({List<String> firstChord, List<String> laterChord, List<String> labelName}) {
+  static Widget buildBars(List<SaveData> saveData) {
     int numberOfRow = 4;
     List<Widget> _listCache = [];
     List<Widget> _listColumn = [];
 
-    for(int i = 0; i < firstChord.length; i++) {
-      if((i + 1) % numberOfRow == 1 && labelName[i] != "") {
+    for(int i = 0; i < saveData.length; i++) {
+      if((i + 1) % numberOfRow == 1 && saveData[i].labelName != "") {
         _listCache.add(
           Padding(
             padding: EdgeInsets.only(top: 20, right: 20),
@@ -195,11 +197,11 @@ class CreatePdf {
               width: 60,
               height: 28,
               alignment: Alignment.center,
-              child: Text(labelName[i], style: TextStyle(fontSize: 15.0))
+              child: Text(saveData[i].labelName, style: TextStyle(fontSize: 15.0))
             )
           )
         );
-      } else if((i + 1) % numberOfRow == 1 && labelName[i] == "") {
+      } else if((i + 1) % numberOfRow == 1 && saveData[i].labelName == "") {
         _listCache.add(
           Padding(
               padding: EdgeInsets.only(top: 20, right: 20),
@@ -215,7 +217,7 @@ class CreatePdf {
           builder: (context) {
             return Expanded(
               child: Container(
-                child: buildColumn(width: 100, height: 7, barNumber: i, firstChord: firstChord, laterChord: laterChord)
+                child: buildColumn(width: 100, height: 7, barNumber: i, saveData: saveData)
               ),
             );
           }
@@ -225,7 +227,7 @@ class CreatePdf {
         _listColumn.add(Row(children: _listCache));
         _listColumn.add(Padding(padding: EdgeInsets.all(30.0)));
         _listCache = [];
-      } else if(i + 1 == firstChord.length) {
+      } else if(i + 1 == saveData.length) {
         for(int j = 0; j < numberOfRow - (i + 1) % numberOfRow; j++) {
           _listCache.add(Expanded(child: Container()));
 

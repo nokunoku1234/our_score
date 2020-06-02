@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_resumaker/model/model.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
 
@@ -12,17 +13,16 @@ class _AddPdfPageState extends State<AddPdfPage> {
   List<int> barList = [0];
   int numberOfRow = 4;
 
+  List<SaveData> saveDataList = [];
+  SaveData _saveData;
 
   List<TextEditingController> firstControllerList = [TextEditingController()];
   List<TextEditingController> laterControllerList = [TextEditingController()];
   List<TextEditingController> labelController = [TextEditingController()];
 
-  List<String> firstChord = [""];
-  List<String> laterChord = [""];
-  List<String> labelName = [""];
-
   TextEditingController titleController = TextEditingController();
   TextEditingController musicKeyController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async{
-              String _filePath = await CreatePdf.createPdfA4(firstChord, laterChord, titleController.text, musicKeyController.text, labelName);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
+              createMusic();
+              String _filePath = await CreatePdf.createPdfA4(saveDataList ,titleController.text, musicKeyController.text);
+              await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
+              saveDataList = [];
             },
           ),
         ],
@@ -57,14 +59,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
           barList.add(barList.length);
           firstControllerList.add(TextEditingController());
           laterControllerList.add(TextEditingController());
-          firstChord.add("");
-          laterChord.add("");
-          labelName.add("");
           labelController.add(TextEditingController());
-//          if(barList.length % numberOfRow == 1) {
-//            labelName.add("");
-//            labelController.add(TextEditingController());
-//          }
 
           setState(() {
 
@@ -74,22 +69,34 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
+  void createMusic() {
+    for(int i = 0; i < barList.length; i++) {
+      _saveData = SaveData(
+        barNumber: i + 1,
+        firstChord: firstControllerList[i].text,
+        laterChord: laterControllerList[i].text,
+        labelName: labelController[i].text
+      );
+      saveDataList.add(_saveData);
+    }
+  }
+
   Row buildTitle() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         Expanded(flex: 1, child: Container()),
         Expanded(
-          flex: 2,
-          child: Container(
-            child: Center(
-              child: TextField(
-                textAlign: TextAlign.center,
-                controller: titleController,
-                style: TextStyle(fontSize: 25.0),
-              ),
+            flex: 2,
+            child: Container(
+                child: Center(
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    controller: titleController,
+                    style: TextStyle(fontSize: 25.0),
+                  ),
+                )
             )
-          )
         ),
         Expanded(
           flex: 1,
@@ -128,10 +135,8 @@ class _AddPdfPageState extends State<AddPdfPage> {
             height: 28,
             width: 40,
             child: TextField(
+              textAlign: TextAlign.center,
               controller: labelController[i],
-              onEditingComplete: () {
-                labelName[i] = labelController[i].text;
-              },
             ),
           )
         );
@@ -184,9 +189,6 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   width: width / 2,
                   child: TextField(
                     controller: firstControllerList[barNumber],
-                    onEditingComplete: () {
-                      firstChord[barNumber] = firstControllerList[barNumber].text;
-                    },
                   )
                 ),
               ),
@@ -200,9 +202,6 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   width: width / 2,
                   child: TextField(
                     controller: laterControllerList[barNumber],
-                    onEditingComplete: () {
-                      laterChord[barNumber] = laterControllerList[barNumber].text;
-                    },
                   )
                 ),
               ),

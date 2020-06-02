@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_resumaker/pages/add_pdf_page.dart';
+import 'package:simple_resumaker/utils/db_provider.dart';
+
+import 'model/model.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,12 +29,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
+  List<DbData> _dbData = [];
+
+  Future<void> setDb() async{
+    await DbProvider.setDb();
+    _dbData = await DbProvider.getData();
+
     setState(() {
-      _counter++;
+
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    setDb();
   }
 
   @override

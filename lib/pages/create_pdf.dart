@@ -7,7 +7,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class CreatePdf {
-  static Future<String> createPdfA4(String text1, String text2) async {
+  static Future<String> createPdfA4(List<String> firstChord, List<String> laterChord, String title, String musicKey, List<String> labelName) async {
     final Document pdf = Document();
 
     Future<dynamic> getFontData() async {
@@ -46,45 +46,9 @@ class CreatePdf {
           );
         },
         build: (Context context) => <Widget>[
-          ListView.builder(
-            itemBuilder: (Context context, int i) {
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      ListView.builder(
-                        direction: Axis.horizontal,
-                        itemBuilder: (Context context, int i) {
-                          return ListView.builder(
-                              itemBuilder: (Context context, int i) {
-                                return Container(
-                                  height: 3 * PdfPageFormat.mm,
-                                  width: 45 * PdfPageFormat.mm,
-                                  decoration: BoxDecoration(
-                                    border: BoxBorder(
-                                      top: true,
-                                      right: true,
-                                      bottom: true,
-                                      left: true,
-                                    ),
-                                  ),
-                                );
-                              },
-                              itemCount: 4
-                          );
-                        },
-                        itemCount: 4
-                      )
-                    ]
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(27.0),
-                  ),
-                ]
-              );
-            },
-            itemCount: 8
-          )
+          buildTitle(font, title, musicKey),
+          Padding(padding: EdgeInsets.all(20.0)),
+          buildBars(firstChord: firstChord, laterChord: laterChord, labelName: labelName)
         ],
       ),
     );
@@ -98,4 +62,178 @@ class CreatePdf {
 
     return _filePath;
   }
+
+  static Column buildColumn({double width, double height, int barNumber, List<String> firstChord, List<String> laterChord}) {
+    return Column(
+          children: [
+            Container(
+              width: width,
+              height: 20,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: width / 2,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 30),
+                        child: Text(firstChord[barNumber], style: TextStyle(fontSize: 20))
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: width / 2,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 30),
+                        child: Text(laterChord[barNumber], style: TextStyle(fontSize: 20))
+                      ),
+                    ),
+                  ),
+                ]
+              ),
+            ),
+            Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                border: BoxBorder(
+                  top: true,
+                  right: true,
+                  bottom: true,
+                  left: true,
+                ),
+              ),
+            ),
+            Container(
+              width: 100,
+              height: 7,
+              decoration: BoxDecoration(
+                border: BoxBorder(
+                  top: true,
+                  right: true,
+                  bottom: true,
+                  left: true,
+                ),
+              ),
+            ),
+            Container(
+              width: 100,
+              height: 7,
+              decoration: BoxDecoration(
+                border: BoxBorder(
+                  top: true,
+                  right: true,
+                  bottom: true,
+                  left: true,
+                ),
+              ),
+            ),
+            Container(
+              width: 100,
+              height: 7,
+              decoration: BoxDecoration(
+                border: BoxBorder(
+                  top: true,
+                  right: true,
+                  bottom: true,
+                  left: true,
+                ),
+              ),
+            ),
+          ]
+        );
+  }
+
+  static Column buildTitle(font, title, musicKey) {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(flex: 1, child: Container(),),
+            Expanded(
+              flex: 2,
+              child: Container(
+                child: Center(
+                  child: Text(title, style: TextStyle(fontSize: 25.0, font: font)),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: Text('key = $musicKey', style: TextStyle(font: font)),
+              ),
+            ),
+          ]
+        ),
+      ]
+    );
+  }
+
+  static Widget buildBars({List<String> firstChord, List<String> laterChord, List<String> labelName}) {
+    int numberOfRow = 4;
+    List<Widget> _listCache = [];
+    List<Widget> _listColumn = [];
+
+    for(int i = 0; i < firstChord.length; i++) {
+      if((i + 1) % numberOfRow == 1 && labelName[i] != "") {
+        _listCache.add(
+          Padding(
+            padding: EdgeInsets.only(top: 20, right: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                border: BoxBorder(
+                  top: true,
+                  right: true,
+                  bottom: true,
+                  left: true,
+                )
+              ),
+              width: 60,
+              height: 28,
+              alignment: Alignment.center,
+              child: Text(labelName[i], style: TextStyle(fontSize: 15.0))
+            )
+          )
+        );
+      } else if((i + 1) % numberOfRow == 1 && labelName[i] == "") {
+        _listCache.add(
+          Padding(
+              padding: EdgeInsets.only(top: 20, right: 20),
+              child: Container(
+                  width: 60,
+                  height: 28,
+              )
+          )
+        );
+      }
+      _listCache.add(
+        Builder(
+          builder: (context) {
+            return Expanded(
+              child: Container(
+                child: buildColumn(width: 100, height: 7, barNumber: i, firstChord: firstChord, laterChord: laterChord)
+              ),
+            );
+          }
+        )
+      );
+      if((i + 1) % numberOfRow == 0) {
+        _listColumn.add(Row(children: _listCache));
+        _listColumn.add(Padding(padding: EdgeInsets.all(30.0)));
+        _listCache = [];
+      } else if(i + 1 == firstChord.length) {
+        for(int j = 0; j < numberOfRow - (i + 1) % numberOfRow; j++) {
+          _listCache.add(Expanded(child: Container()));
+
+        }
+        _listColumn.add(Row(children: _listCache));
+      }
+    }
+    return Column(children: _listColumn);
+  }
+
 }

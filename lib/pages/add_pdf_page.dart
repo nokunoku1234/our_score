@@ -10,30 +10,62 @@ class AddPdfPage extends StatefulWidget {
 class _AddPdfPageState extends State<AddPdfPage> {
 
   List<int> barList = [0];
+  int numberOfRow = 4;
 
-  TextEditingController txtController = TextEditingController();
-  TextEditingController txtController2 = TextEditingController();
 
+  List<TextEditingController> firstControllerList = [TextEditingController()];
+  List<TextEditingController> laterControllerList = [TextEditingController()];
+  List<TextEditingController> labelController = [TextEditingController()];
+
+  List<String> firstChord = [""];
+  List<String> laterChord = [""];
+  List<String> labelName = [""];
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController musicKeyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Add PDF'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () async{
+              String _filePath = await CreatePdf.createPdfA4(firstChord, laterChord, titleController.text, musicKeyController.text, labelName);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
+            },
+          ),
+        ],
       ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          children: <Widget>[
-            buildTitle(),
-            buildBars(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              buildTitle(),
+              buildBars(),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           barList.add(barList.length);
+          firstControllerList.add(TextEditingController());
+          laterControllerList.add(TextEditingController());
+          firstChord.add("");
+          laterChord.add("");
+          labelName.add("");
+          labelController.add(TextEditingController());
+//          if(barList.length % numberOfRow == 1) {
+//            labelName.add("");
+//            labelController.add(TextEditingController());
+//          }
+
           setState(() {
 
           });
@@ -48,24 +80,44 @@ class _AddPdfPageState extends State<AddPdfPage> {
       children: <Widget>[
         Expanded(flex: 1, child: Container()),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Container(
-            width: 100,
-            child: Center(child: Text(
-              'タイトル',
-              style: TextStyle(fontSize: 25),
-              )
+            child: Center(
+              child: TextField(
+                textAlign: TextAlign.center,
+                controller: titleController,
+                style: TextStyle(fontSize: 25.0),
+              ),
             )
           )
         ),
-        Expanded(flex: 1, child: Container(child: Center(child: Text('key = C')))),
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text('key = '),
+                  Container(
+                    height: 10,
+                    width: 35,
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      controller: musicKeyController,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Widget buildBars() {
-    int numberOfRow = 4;
-
     List<Widget> _listColumn = [];
     List<Widget> _listCache = [];
 
@@ -75,7 +127,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
           Container(
             height: 28,
             width: 40,
-            child: TextField(),
+            child: TextField(
+              controller: labelController[i],
+              onEditingComplete: () {
+                labelName[i] = labelController[i].text;
+              },
+            ),
           )
         );
       }
@@ -84,7 +141,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
          builder: (context) {
            return Expanded(
              child: Container(
-               child: buildColumn(width: 100, height: 7),
+               child: buildColumn(width: 100, height: 7, barNumber: i),
              ),
            );
          },
@@ -113,7 +170,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
-  Column buildColumn({double width, double height}) {
+  Column buildColumn({double width, double height, int barNumber}) {
     return Column(
       children: <Widget>[
         Row(
@@ -125,7 +182,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 child: Container(
                   height: 20,
                   width: width / 2,
-                  child: TextField()
+                  child: TextField(
+                    controller: firstControllerList[barNumber],
+                    onEditingComplete: () {
+                      firstChord[barNumber] = firstControllerList[barNumber].text;
+                    },
+                  )
                 ),
               ),
             ),
@@ -136,7 +198,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 child: Container(
                   height: 20,
                   width: width / 2,
-                  child: TextField()
+                  child: TextField(
+                    controller: laterControllerList[barNumber],
+                    onEditingComplete: () {
+                      laterChord[barNumber] = laterControllerList[barNumber].text;
+                    },
+                  )
                 ),
               ),
             ),
@@ -193,4 +260,5 @@ class _AddPdfPageState extends State<AddPdfPage> {
       ],
     );
   }
+
 }

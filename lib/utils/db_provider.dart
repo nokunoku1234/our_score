@@ -25,30 +25,34 @@ class DbProvider {
 
   static Future<void> _createTable(Database db, int version) async{
     return await db.execute(
-      "CREATE TABLE chord_maker(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, saveData TEXT, date TEXT)"
+      "CREATE TABLE chord_maker(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, music_key TEXT, bar_number INTEGER, first_chord TEXT, later_chord TEXT, label_name TEXT, date TEXT)"
     );
   }
 
-  static Future<void> insertData(DbData dbData) async{
+  static Future<void> insertData(SaveData saveData) async{
     await database.insert(
       'chord_maker',
-      dbData.toMap(),
+      saveData.toMap(),
     );
   }
 
-  static Future<List<DbData>> getData() async{
+  static Future<List<SaveData>> getData() async{
     final List<Map<String, dynamic>> maps = await database.query('chord_maker');
-      return List.generate(maps.length, (i){
-      return DbData(
+    return List.generate(maps.length, (i){
+      return SaveData(
         id: maps[i]['id'],
         title: maps[i]['title'],
-        saveData: jsonDecode(maps[i]['saveData']),
+        musicKey: maps[i]['music_key'],
+        barNumber: maps[i]['bar_number'],
+        firstChord: jsonDecode(maps[i]['first_chord']),
+        laterChord: jsonDecode(maps[i]['later_chord']),
+        labelName: jsonDecode(maps[i]['label_name']),
         date: DateTime.parse(maps[i]['date'])
       );
     });
   }
 
-  static Future<void> updateData(DbData dbData, int id) async {
+  static Future<void> updateData(SaveData dbData, int id) async {
     await database.update(
     'chord_maker',
     dbData.toMap(),

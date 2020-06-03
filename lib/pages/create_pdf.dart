@@ -50,13 +50,13 @@ class CreatePdf {
         build: (Context context) => <Widget>[
           buildTitle(font, saveData.title, saveData.musicKey),
           Padding(padding: EdgeInsets.all(20.0)),
-          buildBars(saveData)
+          buildBars(saveData, font)
         ],
       ),
     );
     Directory _temporaryDirectory = await getTemporaryDirectory();
     String temporaryDirectoryPath = _temporaryDirectory.path;
-    String _filePath = '$temporaryDirectoryPath/resume.pdf';
+    String _filePath = '$temporaryDirectoryPath/${saveData.title}.pdf';
 
     List<int> _pdfSaveData = pdf.save();
     File _file = File(_filePath);
@@ -65,7 +65,7 @@ class CreatePdf {
     return _filePath;
   }
 
-  static Column buildColumn({double width, double height, int barNumber, SaveData saveData}) {
+  static Column buildColumn({double width, double height, int barNumber, SaveData saveData, font}) {
     return Column(
           children: [
             Container(
@@ -79,7 +79,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 30),
-                        child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20))
+                        child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20, font: font))
                       ),
                     ),
                   ),
@@ -89,7 +89,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 30),
-                        child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20))
+                        child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20, font: font))
                       ),
                     ),
                   ),
@@ -175,7 +175,7 @@ class CreatePdf {
     );
   }
 
-  static Widget buildBars(SaveData saveData) {
+  static Widget buildBars(SaveData saveData, font) {
     int numberOfRow = 4;
     List<Widget> _listCache = [];
     List<Widget> _listColumn = [];
@@ -197,7 +197,7 @@ class CreatePdf {
               width: 60,
               height: 28,
               alignment: Alignment.center,
-              child: Text(saveData.labelName[(i + 1).toString()], style: TextStyle(fontSize: 15.0))
+              child: Text(saveData.labelName[(i + 1).toString()], style: TextStyle(fontSize: 15.0, font: font))
             )
           )
         );
@@ -217,7 +217,7 @@ class CreatePdf {
           builder: (context) {
             return Expanded(
               child: Container(
-                child: buildColumn(width: 100, height: 7, barNumber: i, saveData: saveData)
+                child: buildColumn(width: 100, height: 7, barNumber: i, saveData: saveData, font: font)
               ),
             );
           }

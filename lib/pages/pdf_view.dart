@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:simple_resumaker/main.dart';
 
 class PdfViewPage extends StatefulWidget {
@@ -24,6 +25,15 @@ class _PdfViewPageState extends State<PdfViewPage> {
               while(Navigator.canPop(context)) {
                 Navigator.pop(context);
               }
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () async{
+              await FlutterShare.shareFile(
+                title: 'Example share',
+                filePath: widget.filePath,
+              );
             },
           ),
         ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_resumaker/pages/add_pdf_page.dart';
+import 'package:simple_resumaker/pages/create_pdf.dart';
+import 'package:simple_resumaker/pages/pdf_view.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
 import 'model/model.dart';
@@ -30,11 +32,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  List<DbData> _dbData = [];
+  List<SaveData> dbData = [];
 
   Future<void> setDb() async{
     await DbProvider.setDb();
-    _dbData = await DbProvider.getData();
+    dbData = await DbProvider.getData();
 
     setState(() {
 
@@ -54,14 +56,18 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Simple Resumaker'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Simple Resumaker Starts Here'),
-
-          ],
-        ),
+      body: ListView.builder(
+        itemBuilder: (BuildContext context, int i) {
+          return ListTile(
+            leading: Icon(Icons.picture_as_pdf),
+            title: Text(dbData[i].title),
+            onTap: () async{
+//              String _filePath = await CreatePdf.createPdfA4(dbData[i].saveData , dbData[i].title, dbData[i].musicKey);
+//              await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
+            },
+          );
+        },
+        itemCount: dbData.length,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

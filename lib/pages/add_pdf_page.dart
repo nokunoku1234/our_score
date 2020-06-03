@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_resumaker/model/model.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
+import 'package:simple_resumaker/utils/db_provider.dart';
 
 class AddPdfPage extends StatefulWidget {
   @override
@@ -13,8 +14,11 @@ class _AddPdfPageState extends State<AddPdfPage> {
   List<int> barList = [0];
   int numberOfRow = 4;
 
-  List<SaveData> saveDataList = [];
   SaveData _saveData;
+
+  final Map<String, String> firstChordMap = {};
+  final Map<String, String> laterChordMap = {};
+  final Map<String, String> labelNameMap = {};
 
   List<TextEditingController> firstControllerList = [TextEditingController()];
   List<TextEditingController> laterControllerList = [TextEditingController()];
@@ -22,7 +26,6 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController musicKeyController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +37,11 @@ class _AddPdfPageState extends State<AddPdfPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async{
+//              makeList();
               createMusic();
-              String _filePath = await CreatePdf.createPdfA4(saveDataList ,titleController.text, musicKeyController.text);
+              String _filePath = await CreatePdf.createPdfA4(_saveData, barList.length);
               await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
-              saveDataList = [];
+              _saveData = SaveData();
             },
           ),
         ],
@@ -69,16 +73,26 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
-  void createMusic() {
+  void makeList() {
     for(int i = 0; i < barList.length; i++) {
-      _saveData = SaveData(
-        barNumber: i + 1,
-        firstChord: firstControllerList[i].text,
-        laterChord: laterControllerList[i].text,
-        labelName: labelController[i].text
-      );
-      saveDataList.add(_saveData);
+      firstChordMap[(i + 1).toString()] = firstControllerList[i].text;
+      laterChordMap[(i + 1).toString()] = laterControllerList[i].text;
+      labelNameMap[(i + 1).toString()] = labelController[i].text;
     }
+  }
+
+  void createMusic() async{
+    _saveData = SaveData(
+        title: titleController.text,
+        musicKey: musicKeyController.text,
+        firstChord: firstChordMap,
+        laterChord: laterChordMap,
+        labelName: labelNameMap,
+        date: DateTime.now()
+    );
+
+    await DbProvider.insertData(_saveData);
+
   }
 
   Row buildTitle() {
@@ -87,16 +101,16 @@ class _AddPdfPageState extends State<AddPdfPage> {
       children: <Widget>[
         Expanded(flex: 1, child: Container()),
         Expanded(
-            flex: 2,
-            child: Container(
-                child: Center(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    controller: titleController,
-                    style: TextStyle(fontSize: 25.0),
-                  ),
-                )
-            )
+          flex: 2,
+          child: Container(
+              child: Center(
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  controller: titleController,
+                  style: TextStyle(fontSize: 25.0),
+                ),
+              )
+          )
         ),
         Expanded(
           flex: 1,

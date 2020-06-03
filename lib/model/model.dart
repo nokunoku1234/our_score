@@ -4,32 +4,28 @@ import 'package:intl/intl.dart';
 
 class SaveData {
 
-  int barNumber;
-  String firstChord;
-  String laterChord;
-  String labelName;
-
-  SaveData({this.barNumber, this.firstChord, this.laterChord, this.labelName});
-
-}
-
-class DbData {
-
   int id;
   String title;
-  List<SaveData> saveData;
+  String musicKey;
+  Map<String, String> firstChord;
+  Map<String, String> laterChord;
+  Map<String, String> labelName;
   DateTime date;
 
-  DbData({this.id, this.title, this.saveData, this.date});
+  SaveData({this.id, this.title, this.musicKey, this.firstChord, this.laterChord, this.labelName, this.date});
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {};
 
     map['id'] = id;
     map['title'] = title;
-    map['saveData'] = jsonEncode(saveData);
+    map['music_key'] = musicKey;
+    map['first_chord'] = jsonEncode(firstChord);
+    map['later_chord'] = jsonEncode(laterChord);
+    map['label_name'] = jsonEncode(labelName);
     map['date'] = DateFormat('yyyy-MM-dd HH:mm:ss').format(date);
 
+    return map;
   }
 
 }

@@ -40,6 +40,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
     if(widget.isNew != true) {
       makeEditList();
+
+      final Map<String, dynamic> editFirstChordMap = widget.dbData.firstChord;
+      final Map<String, dynamic> editLaterChordMap = widget.dbData.laterChord;
+      final Map<String, dynamic> editLabelNameMap = widget.dbData.labelName;
     }
   }
 
@@ -61,7 +65,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
             icon: Icon(Icons.check),
             onPressed: () async{
               makeList();
-              createMusic();
+              createMusic(widget.isNew);
               String _filePath = await CreatePdf.createPdfA4(_saveData);
               await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
               _saveData = SaveData();
@@ -96,26 +100,46 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
+
   void makeList() {
-    for(int i = 0; i < barList.length; i++) {
-      firstChordMap[(i + 1).toString()] = firstControllerList[i].text;
-      laterChordMap[(i + 1).toString()] = laterControllerList[i].text;
-      labelNameMap[(i + 1).toString()] = labelControllerList[i].text;
+    if(widget.isNew) {
+      for(int i = 0; i < barList.length; i++) {
+        firstChordMap[(i + 1).toString()] = firstControllerList[i].text;
+        laterChordMap[(i + 1).toString()] = laterControllerList[i].text;
+        labelNameMap[(i + 1).toString()] = labelControllerList[i].text;
+      }
+    } else {
+      (titleController.text != "") ? widget.dbData.title = titleController.text : null;
+      (musicKeyController.text != "") ? widget.dbData.musicKey = musicKeyController.text : null;
+      for(int i = 0; i < barList.length; i++) {
+        (firstControllerList[i].text != "") ? widget.dbData.firstChord[(i + 1).toString()] = firstControllerList[i].text : null;
+        (laterControllerList[i].text != "") ? widget.dbData.laterChord[(i + 1).toString()] = laterControllerList[i].text : null;
+        (labelControllerList[i].text != "") ? widget.dbData.labelName[(i + 1).toString()] = labelControllerList[i].text : null;
+      }
     }
+
   }
 
-  void createMusic() async{
-    _saveData = SaveData(
-        title: titleController.text,
-        musicKey: musicKeyController.text,
-        barNumber: barList.length,
-        firstChord: firstChordMap,
-        laterChord: laterChordMap,
-        labelName: labelNameMap,
-        date: DateTime.now()
+  void createMusic(bool isNew) async{
+    _saveData =  isNew ? SaveData(
+      title: titleController.text,
+      musicKey: musicKeyController.text,
+      barNumber: barList.length,
+      firstChord: firstChordMap,
+      laterChord: laterChordMap,
+      labelName: labelNameMap,
+      date: DateTime.now()
+    ) : SaveData(
+      title: widget.dbData.title,
+      musicKey: widget.dbData.musicKey,
+      barNumber: barList.length,
+      firstChord: widget.dbData.firstChord,
+      laterChord: widget.dbData.laterChord,
+      labelName: widget.dbData.labelName,
+      date: DateTime.now()
     );
 
-    await DbProvider.insertData(_saveData);
+    isNew ? await DbProvider.insertData(_saveData) : await DbProvider.updateData(_saveData, widget.dbData.id);
 
   }
 

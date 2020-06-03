@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_resumaker/pages/add_pdf_page.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
@@ -64,8 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 leading: Icon(Icons.picture_as_pdf),
                 trailing: IconButton(
                   icon: Icon(Icons.more_vert),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: false, dbData: dbData[i])));
+                  onPressed: () async{
+                    buildShowModalBottomSheet(dbData[i]);
                   },
                 ),
                 title: Text(dbData[i].title),
@@ -91,4 +92,64 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  Future<void> buildShowModalBottomSheet(SaveData saveData) {
+    return showModalBottomSheet(
+      context: context, builder: (BuildContext context) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('編集'),
+            onTap: () async{
+              Navigator.pop(context);
+              await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: false, dbData: saveData)));
+              setDb();
+            },
+          ),
+          Divider(height: 0.0,),
+          ListTile(
+            leading: Icon(Icons.delete),
+            title: Text('削除'),
+            onTap: () async{
+              await buildShowModalPopup(context, saveData);
+              setDb();
+            },
+          ),
+        ],
+      );
+    });
+  }
+
+  Future<void> buildShowModalPopup(BuildContext context, SaveData saveData) {
+    return showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('削除しますか？'),
+            content: Text('削除すると復元できません。'),
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                child: Text('キャンセル'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  print('==================キャンセルしました');
+                },
+              ),
+              CupertinoActionSheetAction(
+                child: Text('削除'),
+                onPressed: () async{
+                  await DbProvider.deleteData(saveData.id);
+                  setDb();
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        }
+    );
+  }
+
 }

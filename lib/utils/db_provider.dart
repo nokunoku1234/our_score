@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:simple_resumaker/model/model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -52,13 +53,20 @@ class DbProvider {
     });
   }
 
-  static Future<void> updateData(SaveData dbData, int id) async {
+  static Future<void> updateData(SaveData saveData, int id) async {
     await database.update(
     'chord_maker',
-    dbData.toMap(),
+    {
+      'title': saveData.title,
+      'music_key': saveData.musicKey,
+      'bar_number': saveData.barNumber,
+      'first_chord': jsonEncode(saveData.firstChord),
+      'later_chord': jsonEncode(saveData.laterChord),
+      'label_name': jsonEncode(saveData.labelName),
+      'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(saveData.date),
+    },
     where: "id = ?",
     whereArgs: [id],
-    conflictAlgorithm: ConflictAlgorithm.fail,
     );
   }
 

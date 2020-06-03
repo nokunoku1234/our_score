@@ -62,6 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.picture_as_pdf),
+                trailing: IconButton(
+                  icon: Icon(Icons.more_vert),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: false, dbData: dbData[i])));
+                  },
+                ),
                 title: Text(dbData[i].title),
                 onTap: () async{
                   String _filePath = await CreatePdf.createPdfA4(dbData[i]);
@@ -77,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
-          await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage()));
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: true)));
           setDb();
         },
         tooltip: 'Increment',

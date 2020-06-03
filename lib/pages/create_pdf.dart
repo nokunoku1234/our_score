@@ -29,24 +29,24 @@ class CreatePdf {
         margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 50.0),
         pageFormat: PdfPageFormat.a4,
         orientation: PageOrientation.portrait,
-        header: (Context context) {
-          if (context.pageNumber == 1) {
-            return null;
-          }
-          return Container(
-            margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-            padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-            decoration: const BoxDecoration(
-                border:
-                BoxBorder(bottom: true, width: 0.5, color: PdfColors.grey)),
-            child: Text(
-              'Portable Document Format',
-              style: Theme.of(context)
-                  .defaultTextStyle
-                  .copyWith(color: PdfColors.grey),
-            ),
-          );
-        },
+//        header: (Context context) {
+//          if (context.pageNumber == 1) {
+//            return null;
+//          }
+//          return Container(
+//            margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+//            padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
+//            decoration: const BoxDecoration(
+//                border:
+//                BoxBorder(bottom: true, width: 0.5, color: PdfColors.grey)),
+//            child: Text(
+//              'Portable Document Format',
+//              style: Theme.of(context)
+//                  .defaultTextStyle
+//                  .copyWith(color: PdfColors.grey),
+//            ),
+//          );
+//        },
         build: (Context context) => <Widget>[
           buildTitle(font, saveData.title, saveData.musicKey),
           Padding(padding: EdgeInsets.all(20.0)),

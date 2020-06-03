@@ -5,6 +5,12 @@ import 'package:simple_resumaker/pages/pdf_view.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
 class AddPdfPage extends StatefulWidget {
+
+  final SaveData dbData;
+  final bool isNew;
+
+  AddPdfPage({this.dbData, this.isNew});
+
   @override
   _AddPdfPageState createState() => _AddPdfPageState();
 }
@@ -22,10 +28,27 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
   List<TextEditingController> firstControllerList = [TextEditingController()];
   List<TextEditingController> laterControllerList = [TextEditingController()];
-  List<TextEditingController> labelController = [TextEditingController()];
+  List<TextEditingController> labelControllerList = [TextEditingController()];
 
   TextEditingController titleController = TextEditingController();
   TextEditingController musicKeyController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    if(widget.isNew != true) {
+      makeEditList();
+    }
+  }
+
+  void makeEditList() {
+    barList = List.generate(widget.dbData.barNumber, (i) => i);
+    firstControllerList = List.generate(widget.dbData.barNumber, (i) => TextEditingController());
+    laterControllerList = List.generate(widget.dbData.barNumber, (i) => TextEditingController());
+    labelControllerList = List.generate(widget.dbData.barNumber, (i) => TextEditingController());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +62,6 @@ class _AddPdfPageState extends State<AddPdfPage> {
             onPressed: () async{
               makeList();
               createMusic();
-              print(firstChordMap);
               String _filePath = await CreatePdf.createPdfA4(_saveData);
               await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
               _saveData = SaveData();
@@ -64,7 +86,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
           barList.add(barList.length);
           firstControllerList.add(TextEditingController());
           laterControllerList.add(TextEditingController());
-          labelController.add(TextEditingController());
+          labelControllerList.add(TextEditingController());
 
           setState(() {
 
@@ -78,7 +100,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     for(int i = 0; i < barList.length; i++) {
       firstChordMap[(i + 1).toString()] = firstControllerList[i].text;
       laterChordMap[(i + 1).toString()] = laterControllerList[i].text;
-      labelNameMap[(i + 1).toString()] = labelController[i].text;
+      labelNameMap[(i + 1).toString()] = labelControllerList[i].text;
     }
   }
 
@@ -97,46 +119,55 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
   }
 
-  Row buildTitle() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Expanded(flex: 1, child: Container()),
-        Expanded(
-          flex: 2,
-          child: Container(
-              child: Center(
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  controller: titleController,
-                  style: TextStyle(fontSize: 25.0),
-                ),
-              )
-          )
-        ),
-        Expanded(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+  Widget buildTitle() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Expanded(flex: 1, child: Container()),
+          Expanded(
+            flex: 2,
             child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text('key = '),
-                  Container(
-                    height: 10,
-                    width: 35,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      controller: musicKeyController,
+                child: Center(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: widget.isNew ? null : widget.dbData.title,
                     ),
+                    textAlign: TextAlign.center,
+                    controller: titleController,
+                    style: TextStyle(fontSize: 25.0),
                   ),
-                ],
+                )
+            )
+          ),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text('key = '),
+                    Container(
+                      height: 15,
+                      width: 35,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: widget.isNew ? null : widget.dbData.musicKey,
+                        ),
+                        textAlign: TextAlign.center,
+                        controller: musicKeyController,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -147,12 +178,18 @@ class _AddPdfPageState extends State<AddPdfPage> {
     for(int i = 0; i < barList.length; i++) {
       if((i + 1) % numberOfRow == 1) {
         _listCache.add(
-          Container(
-            height: 28,
-            width: 40,
-            child: TextField(
-              textAlign: TextAlign.center,
-              controller: labelController[i],
+          Padding(
+            padding: const EdgeInsets.only(right: 5.0, bottom: 22.0),
+            child: Container(
+              height: 28,
+              width: 40,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: widget.isNew ? null : widget.dbData.labelName[(i + 1).toString()],
+                ),
+                textAlign: TextAlign.center,
+                controller: labelControllerList[i],
+              ),
             ),
           )
         );
@@ -201,9 +238,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
               child: Padding(
                 padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
                 child: Container(
-                  height: 20,
+                  height: 15,
                   width: width / 2,
                   child: TextField(
+                    decoration: InputDecoration(
+                      hintText: widget.isNew ? null : widget.dbData.firstChord[(barNumber + 1).toString()],
+                    ),
                     controller: firstControllerList[barNumber],
                   )
                 ),
@@ -214,9 +254,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
               child: Padding(
                 padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
                 child: Container(
-                  height: 20,
+                  height: 15,
                   width: width / 2,
                   child: TextField(
+                    decoration: InputDecoration(
+                      hintText: widget.isNew ? null : widget.dbData.laterChord[(barNumber + 1).toString()],
+                    ),
                     controller: laterControllerList[barNumber],
                   )
                 ),
@@ -270,7 +313,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(11.0),
+          padding: EdgeInsets.only(bottom: 40.0),
         ),
       ],
     );

@@ -8,7 +8,7 @@ import 'package:pdf/widgets.dart';
 import 'package:simple_resumaker/model/model.dart';
 
 class CreatePdf {
-  static Future<String> createPdfA4(SaveData saveData, int barNumber) async {
+  static Future<String> createPdfA4(SaveData saveData) async {
     final Document pdf = Document();
 
 
@@ -50,7 +50,7 @@ class CreatePdf {
         build: (Context context) => <Widget>[
           buildTitle(font, saveData.title, saveData.musicKey),
           Padding(padding: EdgeInsets.all(20.0)),
-          buildBars(saveData, barNumber)
+          buildBars(saveData)
         ],
       ),
     );
@@ -79,7 +79,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 30),
-                        child: Text(saveData.firstChord[barNumber.toString()], style: TextStyle(fontSize: 20))
+                        child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20))
                       ),
                     ),
                   ),
@@ -89,7 +89,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 30),
-                        child: Text(saveData.laterChord[barNumber.toString()], style: TextStyle(fontSize: 20))
+                        child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20))
                       ),
                     ),
                   ),
@@ -175,13 +175,13 @@ class CreatePdf {
     );
   }
 
-  static Widget buildBars(SaveData saveData, int barNumber) {
+  static Widget buildBars(SaveData saveData) {
     int numberOfRow = 4;
     List<Widget> _listCache = [];
     List<Widget> _listColumn = [];
 
-    for(int i = 0; i < barNumber; i++) {
-      if((i + 1) % numberOfRow == 1 && saveData.labelName[i.toString()] != "") {
+    for(int i = 0; i < saveData.barNumber; i++) {
+      if((i + 1) % numberOfRow == 1 && saveData.labelName[(i + 1).toString()] != "") {
         _listCache.add(
           Padding(
             padding: EdgeInsets.only(top: 20, right: 20),
@@ -197,11 +197,11 @@ class CreatePdf {
               width: 60,
               height: 28,
               alignment: Alignment.center,
-              child: Text(saveData.labelName[i.toString()], style: TextStyle(fontSize: 15.0))
+              child: Text(saveData.labelName[(i + 1).toString()], style: TextStyle(fontSize: 15.0))
             )
           )
         );
-      } else if((i + 1) % numberOfRow == 1 && saveData.labelName[i.toString()] == "") {
+      } else if((i + 1) % numberOfRow == 1 && saveData.labelName[(i + 1).toString()] == "") {
         _listCache.add(
           Padding(
               padding: EdgeInsets.only(top: 20, right: 20),
@@ -227,7 +227,7 @@ class CreatePdf {
         _listColumn.add(Row(children: _listCache));
         _listColumn.add(Padding(padding: EdgeInsets.all(30.0)));
         _listCache = [];
-      } else if(i + 1 == barNumber) {
+      } else if(i + 1 == saveData.barNumber) {
         for(int j = 0; j < numberOfRow - (i + 1) % numberOfRow; j++) {
           _listCache.add(Expanded(child: Container()));
 

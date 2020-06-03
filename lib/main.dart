@@ -58,20 +58,27 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int i) {
-          return ListTile(
-            leading: Icon(Icons.picture_as_pdf),
-            title: Text(dbData[i].title),
-            onTap: () async{
-//              String _filePath = await CreatePdf.createPdfA4(dbData[i].saveData , dbData[i].title, dbData[i].musicKey);
-//              await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
-            },
+          return Column(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.picture_as_pdf),
+                title: Text(dbData[i].title),
+                onTap: () async{
+                  String _filePath = await CreatePdf.createPdfA4(dbData[i]);
+                  await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
+                  setDb();
+                },
+              ),
+              Divider(height: 0.0,),
+            ],
           );
         },
         itemCount: dbData.length,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage()));
+        onPressed: () async{
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage()));
+          setDb();
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),

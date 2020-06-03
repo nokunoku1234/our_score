@@ -16,9 +16,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
   SaveData _saveData;
 
-  final Map<String, String> firstChordMap = {};
-  final Map<String, String> laterChordMap = {};
-  final Map<String, String> labelNameMap = {};
+  final Map<String, dynamic> firstChordMap = {};
+  final Map<String, dynamic> laterChordMap = {};
+  final Map<String, dynamic> labelNameMap = {};
 
   List<TextEditingController> firstControllerList = [TextEditingController()];
   List<TextEditingController> laterControllerList = [TextEditingController()];
@@ -37,9 +37,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async{
-//              makeList();
+              makeList();
               createMusic();
-              String _filePath = await CreatePdf.createPdfA4(_saveData, barList.length);
+              print(firstChordMap);
+              String _filePath = await CreatePdf.createPdfA4(_saveData);
               await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
               _saveData = SaveData();
             },
@@ -85,6 +86,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     _saveData = SaveData(
         title: titleController.text,
         musicKey: musicKeyController.text,
+        barNumber: barList.length,
         firstChord: firstChordMap,
         laterChord: laterChordMap,
         labelName: labelNameMap,

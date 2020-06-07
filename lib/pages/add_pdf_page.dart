@@ -189,6 +189,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                       height: 15,
                       width: 35,
                       child: TextField(
+                        style: TextStyle(fontSize: fontSize),
                         focusNode: AlwaysDisabledFocusNode(),
                         onTap: () async{
                           await showKeyBoard(whichController: 'musicKey');

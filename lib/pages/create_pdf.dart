@@ -78,8 +78,8 @@ class CreatePdf {
                     child: Container(
                       width: width / 2,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 30),
-                        child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20, font: font))
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 12, font: font))
                       ),
                     ),
                   ),
@@ -88,8 +88,8 @@ class CreatePdf {
                     child: Container(
                       width: width / 2,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 30),
-                        child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 20, font: font))
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 12, font: font))
                       ),
                     ),
                   ),

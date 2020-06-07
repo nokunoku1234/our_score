@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_resumaker/model/model.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
+import 'package:simple_resumaker/utils/custom_layout.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
 class AddPdfPage extends StatefulWidget {
@@ -26,12 +27,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
   final Map<String, dynamic> laterChordMap = {};
   final Map<String, dynamic> labelNameMap = {};
 
-  List<TextEditingController> firstControllerList = [TextEditingController()];
-  List<TextEditingController> laterControllerList = [TextEditingController()];
-  List<TextEditingController> labelControllerList = [TextEditingController()];
+  static List<TextEditingController> firstControllerList = [TextEditingController()];
+  static List<TextEditingController> laterControllerList = [TextEditingController()];
+  static List<TextEditingController> labelControllerList = [TextEditingController()];
 
   TextEditingController titleController = TextEditingController();
-  TextEditingController musicKeyController = TextEditingController();
+  static TextEditingController musicKeyController = TextEditingController();
 
   @override
   void initState() {
@@ -68,6 +69,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
               createMusic(widget.isNew);
               String _filePath = await CreatePdf.createPdfA4(_saveData);
               await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
+              clearText();
               _saveData = SaveData();
             },
           ),
@@ -100,6 +102,14 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
+  void clearText() {
+    for(int i = 0; i < barList.length; i++) {
+      firstControllerList[i].clear();
+      laterControllerList[i].clear();
+      labelControllerList[i].clear();
+    }
+    musicKeyController.clear();
+  }
 
   void makeList() {
     if(widget.isNew) {
@@ -178,6 +188,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
                       height: 15,
                       width: 35,
                       child: TextField(
+                        focusNode: AlwaysDisabledFocusNode(),
+                        onTap: () async{
+                          await showKeyBoard(whichController: 'musicKey');
+                        },
                         decoration: InputDecoration(
                           hintText: widget.isNew ? null : widget.dbData.musicKey,
                         ),
@@ -195,6 +209,29 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
+  Future<Widget> showKeyBoard({String whichController, int i}) {
+    return showModalBottomSheet(
+      context: context, builder: (BuildContext context) {
+        String selectController = whichController;
+        switch(selectController) {
+          case'musicKey':
+            return KeyBoard(musicKeyController);
+            break;
+          case'firstChord':
+            return KeyBoard(firstControllerList[i]);
+            break;
+          case'laterChord':
+            return KeyBoard(laterControllerList[i]);
+            break;
+          case'label':
+            return KeyBoard(labelControllerList[i]);
+            break;
+          default:
+            return null;
+        }
+    });
+  }
+
   Widget buildBars() {
     List<Widget> _listColumn = [];
     List<Widget> _listCache = [];
@@ -208,6 +245,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
               height: 28,
               width: 40,
               child: TextField(
+                focusNode: AlwaysDisabledFocusNode(),
+                onTap: () async{
+                  await showKeyBoard(whichController: 'label', i: i);
+                },
                 decoration: InputDecoration(
                   hintText: widget.isNew ? null : widget.dbData.labelName[(i + 1).toString()],
                 ),
@@ -265,6 +306,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   height: 15,
                   width: width / 2,
                   child: TextField(
+                    focusNode: AlwaysDisabledFocusNode(),
+                    onTap: () async{
+                      await showKeyBoard(whichController: 'firstChord', i: barNumber);
+                    },
                     decoration: InputDecoration(
                       hintText: widget.isNew ? null : widget.dbData.firstChord[(barNumber + 1).toString()],
                     ),
@@ -281,6 +326,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   height: 15,
                   width: width / 2,
                   child: TextField(
+                    focusNode: AlwaysDisabledFocusNode(),
+                    onTap: () async{
+                      await showKeyBoard(whichController: 'laterChord', i: barNumber);
+                    },
                     decoration: InputDecoration(
                       hintText: widget.isNew ? null : widget.dbData.laterChord[(barNumber + 1).toString()],
                     ),

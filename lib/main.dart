@@ -17,21 +17,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
 
   List<SaveData> dbData = [];
 
@@ -96,28 +96,31 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> buildShowModalBottomSheet(SaveData saveData) {
     return showModalBottomSheet(
       context: context, builder: (BuildContext context) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('編集'),
-            onTap: () async{
-              Navigator.pop(context);
-              await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: false, dbData: saveData)));
-              setDb();
-            },
-          ),
-          Divider(height: 0.0,),
-          ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('削除'),
-            onTap: () async{
-              await buildShowModalPopup(context, saveData);
-              setDb();
-            },
-          ),
-        ],
+      return SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: Text('編集'),
+              onTap: () async{
+                Navigator.pop(context);
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: false, dbData: saveData)));
+                setDb();
+              },
+            ),
+            Divider(height: 0.0,),
+            ListTile(
+              leading: Icon(Icons.delete),
+              title: Text('削除'),
+              onTap: () async{
+                await buildShowModalPopup(context, saveData);
+                setDb();
+              },
+            ),
+            Divider(height: 0.0,)
+          ],
+        ),
       );
     });
   }

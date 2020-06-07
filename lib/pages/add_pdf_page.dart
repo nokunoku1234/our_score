@@ -20,6 +20,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
   List<int> barList = [0];
   int numberOfRow = 4;
+  double fontSize = 12.0;
 
   SaveData _saveData;
 
@@ -212,19 +213,18 @@ class _AddPdfPageState extends State<AddPdfPage> {
   Future<Widget> showKeyBoard({String whichController, int i}) {
     return showModalBottomSheet(
       context: context, builder: (BuildContext context) {
-        String selectController = whichController;
-        switch(selectController) {
+        switch(whichController) {
           case'musicKey':
-            return KeyBoard(musicKeyController);
+            return KeyBoard(musicKeyController, 'musicKey');
             break;
           case'firstChord':
-            return KeyBoard(firstControllerList[i]);
+            return KeyBoard(firstControllerList[i], 'chord');
             break;
           case'laterChord':
-            return KeyBoard(laterControllerList[i]);
+            return KeyBoard(laterControllerList[i], 'chord');
             break;
           case'label':
-            return KeyBoard(labelControllerList[i]);
+            return KeyBoard(labelControllerList[i], 'label');
             break;
           default:
             return null;
@@ -240,11 +240,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
       if((i + 1) % numberOfRow == 1) {
         _listCache.add(
           Padding(
-            padding: const EdgeInsets.only(right: 5.0, bottom: 22.0),
+            padding: const EdgeInsets.only(right: 5.0),
             child: Container(
               height: 28,
               width: 40,
               child: TextField(
+                style: TextStyle(fontSize: fontSize),
                 focusNode: AlwaysDisabledFocusNode(),
                 onTap: () async{
                   await showKeyBoard(whichController: 'label', i: i);
@@ -301,16 +302,19 @@ class _AddPdfPageState extends State<AddPdfPage> {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
+                padding: EdgeInsets.only(right: 2.0, bottom: 3.0),
                 child: Container(
-                  height: 15,
                   width: width / 2,
                   child: TextField(
+                    textAlignVertical: TextAlignVertical.bottom,
+                    enabled: true,
+                    style: TextStyle(fontSize: fontSize),
                     focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'firstChord', i: barNumber);
                     },
                     decoration: InputDecoration(
+                      counterText: '',
                       hintText: widget.isNew ? null : widget.dbData.firstChord[(barNumber + 1).toString()],
                     ),
                     controller: firstControllerList[barNumber],
@@ -321,11 +325,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: EdgeInsets.only(right: 5.0, bottom: 3.0),
+                padding: EdgeInsets.only(right: 2.0, bottom: 3.0),
                 child: Container(
-                  height: 15,
                   width: width / 2,
                   child: TextField(
+                    textAlignVertical: TextAlignVertical.bottom,
+                    style: TextStyle(fontSize: fontSize),
                     focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'laterChord', i: barNumber);

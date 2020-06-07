@@ -3,8 +3,9 @@ import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.
 
 class KeyBoard extends StatefulWidget {
   final TextEditingController textEditingController;
+  String type;
 
-  KeyBoard(this.textEditingController);
+  KeyBoard(this.textEditingController, this.type);
 
   @override
   _KeyBoardState createState() => _KeyBoardState();
@@ -20,28 +21,47 @@ class _KeyBoardState extends State<KeyBoard> {
   // is true will show the numeric keyboard.
   bool isNumericMode = false;
 
+  List<VirtualKeyboardDefaultLayouts> keyBoardLayout;
+
   @override
   void initState() {
-    _customLayoutKeys = CustomLayoutKeys();
     super.initState();
+
+    _customLayoutKeys = CustomLayoutKeys();
+    selectKeyBoardType();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey,
+      color: Color.fromRGBO(220,220, 220, 1.0),
       child: VirtualKeyboard(
-        height: 300,
+        height: 250,
         //width: 500,
         textColor: Colors.white,
         textController: widget.textEditingController,
         //customLayoutKeys: _customLayoutKeys,
-        defaultLayouts: [VirtualKeyboardDefaultLayouts.Arabic,VirtualKeyboardDefaultLayouts.English],
+        defaultLayouts: keyBoardLayout,
         //reverseLayout :true,
         type: VirtualKeyboardType.Alphanumeric,
         onKeyPress: _onKeyPress
       ),
     );
+  }
+
+  void selectKeyBoardType() {
+    switch(widget.type) {
+      case 'musicKey':
+        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Key];
+        break;
+      case 'chord':
+        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Chord, VirtualKeyboardDefaultLayouts.Degree];
+        break;
+      case 'label':
+        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Label];
+        break;
+      default:
+    }
   }
 
   /// Fired when the virtual keyboard key is pressed.
@@ -79,7 +99,7 @@ class CustomLayoutKeys extends VirtualKeyboardLayoutKeys{
   List<List> getLanguage(int index){
     switch(index){
       case 1:
-        return _arabicLayout;
+        return _chordLayout;
       default:
         return defaultEnglishLayout;
     }
@@ -88,7 +108,7 @@ class CustomLayoutKeys extends VirtualKeyboardLayoutKeys{
 }
 
 
-const List<List> _arabicLayout = [
+const List<List> _chordLayout = [
   // Row 1
   const [
     '1',
@@ -104,55 +124,36 @@ const List<List> _arabicLayout = [
   ],
   // Row 2
   const [
-    'ض',
-    'ص',
-    'ث',
-    'ق',
-    'ف',
-    'غ',
-    'ع',
-    'ه',
-    'خ',
-    'ح',
-    'د',
-    VirtualKeyboardKeyAction.Backspace
+    'alt',
+    'omit',
+    'add',
+    'sus',
+    'φ',
+    'dim',
+    'aug',
+    'm',
+    'M',
+    '/',
   ],
   // Row 3
   const [
-    'ش',
-    'س',
-    'ي',
-    'ب',
-    'ل',
-    'ا',
-    'ت',
-    'ن',
-    'م',
-    'ك',
-    'ط',
-    VirtualKeyboardKeyAction.Return
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'A',
+    'B',
+    '♭',
+    '#',
+    VirtualKeyboardKeyAction.Backspace,
   ],
   // Row 4
   const [
-    'ذ',
-    'ئ',
-    'ء',
-    'ؤ',
-    'ر',
-    'لا',
-    'ى',
-    'ة',
-    'و',
-    '.',
-    'ظ',
-    VirtualKeyboardKeyAction.Shift
-  ],
-  // Row 5
-  const [
     VirtualKeyboardKeyAction.SwithLanguage,
-    '@',
     VirtualKeyboardKeyAction.Space,
-    '-',
-    '_',
-  ]
+    VirtualKeyboardKeyAction.Done,
+//    VirtualKeyboardKeyAction.Shift
+  ],
+
 ];

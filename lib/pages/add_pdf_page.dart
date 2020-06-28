@@ -189,8 +189,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
                       height: 15,
                       width: 35,
                       child: TextField(
+                        readOnly: true,
                         style: TextStyle(fontSize: fontSize),
-                        focusNode: AlwaysDisabledFocusNode(),
+//                        focusNode: AlwaysDisabledFocusNode(),
                         onTap: () async{
                           await showKeyBoard(whichController: 'musicKey');
                         },
@@ -246,8 +247,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
               height: 28,
               width: 40,
               child: TextField(
+                readOnly: true,
                 style: TextStyle(fontSize: fontSize),
-                focusNode: AlwaysDisabledFocusNode(),
+//                focusNode: AlwaysDisabledFocusNode(),
                 onTap: () async{
                   await showKeyBoard(whichController: 'label', i: i);
                 },
@@ -307,10 +309,11 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 child: Container(
                   width: width / 2,
                   child: TextField(
+                    readOnly: true,
                     textAlignVertical: TextAlignVertical.bottom,
                     enabled: true,
                     style: TextStyle(fontSize: fontSize),
-                    focusNode: AlwaysDisabledFocusNode(),
+//                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'firstChord', i: barNumber);
                     },
@@ -330,9 +333,10 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 child: Container(
                   width: width / 2,
                   child: TextField(
+                    readOnly: true,
                     textAlignVertical: TextAlignVertical.bottom,
                     style: TextStyle(fontSize: fontSize),
-                    focusNode: AlwaysDisabledFocusNode(),
+//                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'laterChord', i: barNumber);
                     },

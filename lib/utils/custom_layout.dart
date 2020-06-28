@@ -3,7 +3,7 @@ import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.
 
 class KeyBoard extends StatefulWidget {
   final TextEditingController textEditingController;
-  String type;
+  final String type;
 
   KeyBoard(this.textEditingController, this.type);
 

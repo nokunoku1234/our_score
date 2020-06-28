@@ -40,12 +40,11 @@ class _AddPdfPageState extends State<AddPdfPage> {
     // TODO: implement initState
     super.initState();
 
-    if(widget.isNew != true) {
+    if(widget.isNew == true) {
+      clearText();
+      _saveData = SaveData();
+    } else {
       makeEditList();
-
-      final Map<String, dynamic> editFirstChordMap = widget.dbData.firstChord;
-      final Map<String, dynamic> editLaterChordMap = widget.dbData.laterChord;
-      final Map<String, dynamic> editLabelNameMap = widget.dbData.labelName;
     }
   }
 
@@ -69,9 +68,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
               makeList();
               createMusic(widget.isNew);
               String _filePath = await CreatePdf.createPdfA4(_saveData);
-              await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
-              clearText();
-              _saveData = SaveData();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
             },
           ),
         ],

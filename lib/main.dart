@@ -4,6 +4,7 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:simple_resumaker/pages/add_pdf_page.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
+import 'package:simple_resumaker/utils/admob.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
 import 'model/model.dart';
@@ -20,8 +21,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(title: 'Flutter Demo Home Page'),
+      home: FutureBuilder(
+        future: setting(),
+        builder:(BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.connectionState == ConnectionState.done) {
+            return HomePage();
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
+  }
+
+  Future<void> setting() async {
+    AdMob.deviceData =  await AdMob.getDeviceData();
   }
 }
 
@@ -108,10 +122,11 @@ class _HomePageState extends State<HomePage> {
               itemCount: dbData.length,
             ),
           ),
+          AdMob.getBannerContainer(context),
           Container(
             width: double.infinity,
             color: Colors.transparent,
-            height: 30,
+            height: 40,
           ),
         ],
       ),

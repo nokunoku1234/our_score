@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:simple_resumaker/main.dart';
+import 'package:simple_resumaker/utils/admob.dart';
 
 class PdfViewPage extends StatefulWidget {
   final String filePath;
@@ -53,17 +54,26 @@ class _PdfViewPageState extends State<PdfViewPage> {
           ),
         ],
       ),
-      body: PDFView(
-        filePath: widget.filePath,
-        onError: (error) {
-          print('error: $error');
-        },
-        onPageError: (page, error) {
-          print('$page: ${error.toString()}');
-        },
-        onPageChanged: (int page, int total) {
-          print('page change: $page/$total');
-        },
+      body: Stack(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          PDFView(
+            filePath: widget.filePath,
+            onError: (error) {
+              print('error: $error');
+            },
+            onPageError: (page, error) {
+              print('$page: ${error.toString()}');
+            },
+            onPageChanged: (int page, int total) {
+              print('page change: $page/$total');
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: AdMob.getBannerContainer(context),
+          ),
+        ],
       ),
     );
   }

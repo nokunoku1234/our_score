@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_resumaker/model/model.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
+import 'package:simple_resumaker/utils/admob.dart';
 import 'package:simple_resumaker/utils/custom_layout.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
@@ -108,17 +109,30 @@ class _AddPdfPageState extends State<AddPdfPage> {
           ),
         ],
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              buildTitle(),
-              buildBars(),
-            ],
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    buildTitle(),
+                    buildBars(),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+          AdMob.getBannerContainer(context),
+          Container(
+            width: double.infinity,
+            color: Colors.transparent,
+            height: 40,
+          ),
+
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
           color: Colors.white,

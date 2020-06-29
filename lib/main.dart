@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:simple_resumaker/pages/add_pdf_page.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
@@ -8,6 +9,7 @@ import 'package:simple_resumaker/utils/db_provider.dart';
 import 'model/model.dart';
 
 void main() => runApp(MyApp());
+Color primaryColor = Colors.blue;
 
 class MyApp extends StatelessWidget {
   @override
@@ -70,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         margin: EdgeInsets.all(5.0),
                         child: ListTile(
-                          leading: Icon(Icons.queue_music, color: Colors.blue,),
+                          leading: Icon(Icons.queue_music, color: primaryColor,),
                           trailing: IconButton(
                             icon: Icon(Icons.more_vert),
                             onPressed: () async{
@@ -107,12 +109,12 @@ class _HomePageState extends State<HomePage> {
         child: RaisedButton.icon(
           icon: Icon(Icons.add),
           elevation: 10,
-          highlightColor: Colors.blue,
+          highlightColor: primaryColor,
           highlightElevation: 0,
           color: Colors.white,
 //        splashColor: Colors.purple,
           shape: StadiumBorder(
-            side: BorderSide(color: Colors.blue)
+            side: BorderSide(color: primaryColor)
           ),
           onPressed: () async{
             await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: true)));
@@ -122,7 +124,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.blue,
+        color: primaryColor,
         notchMargin: 4.0,
         shape: AutomaticNotchedShape(
           RoundedRectangleBorder(),
@@ -142,26 +144,65 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text('編集'),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: <Widget>[
+                  Flexible(child: Text(saveData.title, style: TextStyle(fontSize: 30,), softWrap: true,)),
+                ],
+              ),
+            ),
+            InkWell(
+              child: Container(
+                height: 70,
+                alignment: Alignment.center,
+                child: ListTile(
+                  leading: Icon(Icons.share, color: primaryColor,),
+                  title: Text('共有'),
+                ),
+              ),
+              onTap: () async{
+                String _filePath = await CreatePdf.createPdfA4(saveData);
+                Navigator.pop(context);
+                await FlutterShare.shareFile(
+                  title: 'Example share',
+                  filePath: _filePath,
+                );
+              },
+            ),
+            Divider(height: 0.0, indent: 20, endIndent: 20, thickness: 1,),
+            InkWell(
+              child: Container(
+                height: 70,
+                alignment: Alignment.center,
+                child: ListTile(
+                  leading: Icon(Icons.edit, color: primaryColor,),
+                  title: Text('編集'),
+                ),
+              ),
               onTap: () async{
                 Navigator.pop(context);
                 await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: false, dbData: saveData)));
                 setDb();
               },
             ),
-            Divider(height: 0.0,),
-            ListTile(
-              leading: Icon(Icons.delete),
-              title: Text('削除'),
+            Divider(height: 0.0, indent: 20, endIndent: 20, thickness: 1,),
+            InkWell(
+              child: Container(
+                height: 70,
+                alignment: Alignment.center,
+                child: ListTile(
+                  leading: Icon(Icons.delete, color: primaryColor,),
+                  title: Text('削除'),
+                ),
+              ),
               onTap: () async{
                 Navigator.pop(context);
                 await buildShowModalPopup(context, saveData);
                 setDb();
               },
             ),
-            Divider(height: 0.0,)
+            Divider(height: 0.0, indent: 20, endIndent: 20, thickness: 1,),
           ],
         ),
       );

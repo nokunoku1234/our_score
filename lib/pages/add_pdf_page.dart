@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_resumaker/model/model.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
@@ -65,10 +66,31 @@ class _AddPdfPageState extends State<AddPdfPage> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async{
-              makeList();
-              createMusic(widget.isNew);
-              String _filePath = await CreatePdf.createPdfA4(_saveData);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath,)));
+              if(titleController.text == "" && widget.isNew == true) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoAlertDialog(
+                        title: Text('エラー'),
+                        content: Text('タイトルが入力されていません'),
+                        actions: <Widget>[
+                          CupertinoDialogAction(
+                            child: Text('OK'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      );
+                    }
+                );
+              } else {
+                makeList();
+                createMusic(widget.isNew);
+                String _filePath = await CreatePdf.createPdfA4(_saveData);
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => PdfViewPage(filePath: _filePath,)));
+              }
             },
           ),
         ],
@@ -225,7 +247,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 child: Center(
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: widget.isNew ? null : widget.dbData.title,
+                      hintText: widget.isNew ? 'タイトルを入力' : widget.dbData.title,
                     ),
                     textAlign: TextAlign.center,
                     controller: titleController,

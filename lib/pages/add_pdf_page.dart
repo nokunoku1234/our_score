@@ -62,6 +62,19 @@ class _AddPdfPageState extends State<AddPdfPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('スコア作成'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Colors.lightBlue,
+                Colors.lightBlueAccent,
+                Colors.blueAccent
+              ]
+            )
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -137,7 +150,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                       side: BorderSide(color: Colors.red)
                   ),
                   onPressed: () {
-                    if(barList.length > 0) {
+                    if(barList.length > 1) {
                       barList.removeLast();
                       firstControllerList.removeLast();
                       laterControllerList.removeLast();

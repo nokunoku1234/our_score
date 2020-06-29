@@ -59,6 +59,19 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('シンプルスコア'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Colors.lightBlue,
+                Colors.lightBlueAccent,
+                Colors.blueAccent
+              ]
+            )
+          ),
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -109,7 +122,7 @@ class _HomePageState extends State<HomePage> {
         child: RaisedButton.icon(
           icon: Icon(Icons.add),
           elevation: 10,
-          highlightColor: primaryColor,
+          highlightColor: Colors.lightBlueAccent,
           highlightElevation: 0,
           color: Colors.white,
 //        splashColor: Colors.purple,
@@ -124,8 +137,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: primaryColor,
-        notchMargin: 4.0,
+        color: Colors.lightBlueAccent,
+        notchMargin: 6.0,
         shape: AutomaticNotchedShape(
           RoundedRectangleBorder(),
           StadiumBorder(
@@ -136,6 +149,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+
+
 
   Future<void> buildShowModalBottomSheet(SaveData saveData) {
     return showModalBottomSheet(

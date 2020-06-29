@@ -20,6 +20,19 @@ class _PdfViewPageState extends State<PdfViewPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Colors.lightBlue,
+                Colors.lightBlueAccent,
+                Colors.blueAccent
+              ]
+            )
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.home),

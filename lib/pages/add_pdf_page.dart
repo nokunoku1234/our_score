@@ -154,7 +154,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
             Expanded(
               child: Container(
                 height: 60,
-                child: RaisedButton.icon(
+                child: (barList.length > 1) ? RaisedButton.icon(
                   icon: Icon(Icons.remove),
                   elevation: 10,
                   color: Colors.white,
@@ -174,7 +174,18 @@ class _AddPdfPageState extends State<AddPdfPage> {
                     }
                   },
                   label: Text('小節削除'),
-                ),
+                )
+                : RaisedButton.icon(
+                  icon: Icon(Icons.remove),
+                  elevation: 10,
+                  color: Colors.white,
+                  highlightColor: Colors.red,
+                  highlightElevation: 0,
+                  shape: StadiumBorder(
+                    side: BorderSide(color: Colors.red)
+                  ),
+                  label: Text('小節削除'),
+                )
               ),
             ),
             Padding(padding: EdgeInsets.all(8.0),),

@@ -58,41 +58,79 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('シンプルスコア'),
       ),
-      body: ListView.builder(
-        itemBuilder: (BuildContext context, int i) {
-          return Padding(
-            padding: EdgeInsets.only(top: 10.0, right: 20, left: 20),
-            child: Card(
-              child: Container(
-                margin: EdgeInsets.all(5.0),
-                child: ListTile(
-                  leading: Icon(Icons.queue_music, color: Colors.blue,),
-                  trailing: IconButton(
-                    icon: Icon(Icons.more_vert),
-                    onPressed: () async{
-                      buildShowModalBottomSheet(dbData[i]);
-                    },
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int i) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 10.0, right: 20, left: 20),
+                  child: Card(
+                    child: InkWell(
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        child: ListTile(
+                          leading: Icon(Icons.queue_music, color: Colors.blue,),
+                          trailing: IconButton(
+                            icon: Icon(Icons.more_vert),
+                            onPressed: () async{
+                              buildShowModalBottomSheet(dbData[i]);
+                            },
+                          ),
+                          title: Text(dbData[i].title),
+                        ),
+                      ),
+                      onTap: () async{
+                        String _filePath = await CreatePdf.createPdfA4(dbData[i]);
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
+                        setDb();
+                      },
+
+                    ),
                   ),
-                  title: Text(dbData[i].title),
-                  onTap: () async{
-                    String _filePath = await CreatePdf.createPdfA4(dbData[i]);
-                    await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
-                    setDb();
-                  },
-                ),
-              ),
+                );
+              },
+              itemCount: dbData.length,
             ),
-          );
-        },
-        itemCount: dbData.length,
+          ),
+          Container(
+            width: double.infinity,
+            color: Colors.transparent,
+            height: 30,
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-          await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: true)));
-          setDb();
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        width: 300,
+        height: 50,
+        child: RaisedButton.icon(
+          icon: Icon(Icons.add),
+          elevation: 10,
+          highlightColor: Colors.blue,
+          highlightElevation: 0,
+          color: Colors.white,
+//        splashColor: Colors.purple,
+          shape: StadiumBorder(
+            side: BorderSide(color: Colors.blue)
+          ),
+          onPressed: () async{
+            await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: true)));
+            setDb();
+          },
+          label: Text('スコア作成'),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+        notchMargin: 4.0,
+        shape: AutomaticNotchedShape(
+          RoundedRectangleBorder(),
+          StadiumBorder(
+            side: BorderSide(),
+          ),
+        ),
+        child: Padding(padding: EdgeInsets.all(10.0),)
       ),
     );
   }

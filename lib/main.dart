@@ -156,6 +156,7 @@ class _HomePageState extends State<HomePage> {
               leading: Icon(Icons.delete),
               title: Text('削除'),
               onTap: () async{
+                Navigator.pop(context);
                 await buildShowModalPopup(context, saveData);
                 setDb();
               },
@@ -187,7 +188,6 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () async{
                   await DbProvider.deleteData(saveData.id);
                   setDb();
-                  Navigator.pop(context);
                   Navigator.pop(context);
                 },
               ),

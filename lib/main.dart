@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       onTap: () async{
                         String _filePath = await CreatePdf.createPdfA4(dbData[i]);
-                        await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
+                        await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: dbData[i].title, filePath: _filePath)));
                         setDb();
                       },
 

@@ -89,7 +89,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 createMusic(widget.isNew);
                 String _filePath = await CreatePdf.createPdfA4(_saveData);
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => PdfViewPage(filePath: _filePath,)));
+                    builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
               }
             },
           ),

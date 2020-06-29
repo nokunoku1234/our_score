@@ -5,8 +5,9 @@ import 'package:simple_resumaker/main.dart';
 
 class PdfViewPage extends StatefulWidget {
   final String filePath;
+  final String title;
 
-  PdfViewPage({this.filePath}) : super();
+  PdfViewPage({this.title, this.filePath}) : super();
 
   @override
   _PdfViewPageState createState() => _PdfViewPageState();
@@ -17,7 +18,8 @@ class _PdfViewPageState extends State<PdfViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PDF Viewer'),
+        centerTitle: true,
+        title: Text(widget.title),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.home),

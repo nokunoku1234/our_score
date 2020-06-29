@@ -60,7 +60,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Add PDF'),
+        title: Text('スコア作成'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.check),
@@ -85,18 +85,79 @@ class _AddPdfPageState extends State<AddPdfPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          barList.add(barList.length);
-          firstControllerList.add(TextEditingController());
-          laterControllerList.add(TextEditingController());
-          labelControllerList.add(TextEditingController());
-
-          setState(() {
-
-          });
-        },
+      bottomNavigationBar: BottomAppBar(
+          color: Colors.white,
+          notchMargin: 4.0,
+          shape: AutomaticNotchedShape(
+            RoundedRectangleBorder(),
+            StadiumBorder(
+              side: BorderSide(),
+            ),
+          ),
+          child: Padding(padding: EdgeInsets.all(10.0),)
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        width: 400,
+        height: 60,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                height: 60,
+                child: RaisedButton.icon(
+                  icon: Icon(Icons.remove),
+                  elevation: 10,
+                  color: Colors.white,
+                  highlightColor: Colors.red,
+                  highlightElevation: 0,
+                  shape: StadiumBorder(
+                      side: BorderSide(color: Colors.red)
+                  ),
+                  onPressed: () {
+                    if(barList.length > 0) {
+                      barList.removeLast();
+                      firstControllerList.removeLast();
+                      laterControllerList.removeLast();
+                      labelControllerList.removeLast();
+
+                      setState(() {});
+                    }
+                  },
+                  label: Text('小節削除'),
+                ),
+              ),
+            ),
+            Padding(padding: EdgeInsets.all(8.0),),
+            Expanded(
+              child: Container(
+                height: 60,
+                child: RaisedButton.icon(
+                  icon: Icon(Icons.add),
+                  elevation: 10,
+                  highlightColor: Colors.blue,
+                  highlightElevation: 0,
+                  color: Colors.white,
+                  shape: StadiumBorder(
+                      side: BorderSide(color: Colors.blue)
+                  ),
+                  onPressed: () {
+                    barList.add(barList.length);
+                    firstControllerList.add(TextEditingController());
+                    laterControllerList.add(TextEditingController());
+                    labelControllerList.add(TextEditingController());
+
+                    setState(() {});
+                  },
+                  label: Text('小節追加'),
+                ),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+
     );
   }
 

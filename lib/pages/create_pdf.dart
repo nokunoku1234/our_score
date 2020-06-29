@@ -49,6 +49,7 @@ class CreatePdf {
 //        },
         build: (Context context) => <Widget>[
           buildTitle(font, saveData.title, saveData.musicKey),
+
           Padding(padding: EdgeInsets.all(20.0)),
           buildBars(saveData, font)
         ],
@@ -151,25 +152,13 @@ class CreatePdf {
   static Column buildTitle(font, title, musicKey) {
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(flex: 1, child: Container(),),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Center(
-                  child: Text(title, style: TextStyle(fontSize: 25.0, font: font)),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Text('key = $musicKey', style: TextStyle(font: font)),
-              ),
-            ),
-          ]
+        Center(
+          child: Text(title, style: TextStyle(fontSize: 20.0, font: font)),
+        ),
+        Padding(padding: EdgeInsets.all(10.0)),
+        Container(
+          alignment: Alignment.centerRight,
+          child: Text('key = $musicKey', style: TextStyle(font: font, fontSize: 13)),
         ),
       ]
     );

@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         margin: EdgeInsets.all(5.0),
                         child: ListTile(
-                          leading: Icon(Icons.queue_music, color: primaryColor,),
+                          leading: Container(height: double.infinity, child: Icon(Icons.queue_music, color: primaryColor,)),
                           trailing: IconButton(
                             icon: Icon(Icons.more_vert),
                             onPressed: () async{

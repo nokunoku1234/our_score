@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -55,29 +56,32 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Simple Resumaker'),
+        title: Text('シンプルスコア'),
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int i) {
-          return Column(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.picture_as_pdf),
-                trailing: IconButton(
-                  icon: Icon(Icons.more_vert),
-                  onPressed: () async{
-                    buildShowModalBottomSheet(dbData[i]);
+          return Padding(
+            padding: EdgeInsets.only(top: 10.0, right: 20, left: 20),
+            child: Card(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ListTile(
+                  leading: Icon(Icons.queue_music, color: Colors.blue,),
+                  trailing: IconButton(
+                    icon: Icon(Icons.more_vert),
+                    onPressed: () async{
+                      buildShowModalBottomSheet(dbData[i]);
+                    },
+                  ),
+                  title: Text(dbData[i].title),
+                  onTap: () async{
+                    String _filePath = await CreatePdf.createPdfA4(dbData[i]);
+                    await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
+                    setDb();
                   },
                 ),
-                title: Text(dbData[i].title),
-                onTap: () async{
-                  String _filePath = await CreatePdf.createPdfA4(dbData[i]);
-                  await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(filePath: _filePath)));
-                  setDb();
-                },
               ),
-              Divider(height: 0.0,),
-            ],
+            ),
           );
         },
         itemCount: dbData.length,

@@ -42,10 +42,8 @@ class _AddPdfPageState extends State<AddPdfPage> {
     // TODO: implement initState
     super.initState();
 
-    if(widget.isNew == true) {
-      clearText();
-      _saveData = SaveData();
-    } else {
+    clearText();
+    if(widget.isNew == false) {
       makeEditList();
     }
   }
@@ -102,8 +100,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 makeList();
                 createMusic(widget.isNew);
                 String _filePath = await CreatePdf.createPdfA4(_saveData);
-                Navigator.push(context, MaterialPageRoute(
+                await Navigator.push(context, MaterialPageRoute(
                     builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
+                _saveData = SaveData();
               }
             },
           ),
@@ -238,12 +237,18 @@ class _AddPdfPageState extends State<AddPdfPage> {
         labelNameMap[(i + 1).toString()] = labelControllerList[i].text;
       }
     } else {
-      (titleController.text != "") ? widget.dbData.title = titleController.text : null;
-      (musicKeyController.text != "") ? widget.dbData.musicKey = musicKeyController.text : null;
+      (titleController.text != "") ? widget.dbData.title = titleController.text : widget.dbData.title = widget.dbData.title;
+      (musicKeyController.text != "") ? widget.dbData.musicKey = musicKeyController.text : widget.dbData.musicKey = widget.dbData.musicKey;
       for(int i = 0; i < barList.length; i++) {
-        (firstControllerList[i].text != "") ? widget.dbData.firstChord[(i + 1).toString()] = firstControllerList[i].text : null;
-        (laterControllerList[i].text != "") ? widget.dbData.laterChord[(i + 1).toString()] = laterControllerList[i].text : null;
-        (labelControllerList[i].text != "") ? widget.dbData.labelName[(i + 1).toString()] = labelControllerList[i].text : null;
+        (firstControllerList[i].text != "")
+            ? firstChordMap[(i + 1).toString()] = firstControllerList[i].text
+            : firstChordMap[(i + 1).toString()] = (i + 1 > widget.dbData.barNumber) ? "" : widget.dbData.firstChord[(i + 1).toString()];
+        (laterControllerList[i].text != "")
+            ? laterChordMap[(i + 1).toString()] = laterControllerList[i].text
+            : laterChordMap[(i + 1).toString()] = (i + 1 > widget.dbData.barNumber) ? "" : widget.dbData.laterChord[(i + 1).toString()];
+        (labelControllerList[i].text != "")
+            ? labelNameMap[(i + 1).toString()] = labelControllerList[i].text
+            : labelNameMap[(i + 1).toString()] = (i + 1 > widget.dbData.barNumber) ? "" : widget.dbData.labelName[(i + 1).toString()];
       }
     }
 
@@ -262,9 +267,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
       title: widget.dbData.title,
       musicKey: widget.dbData.musicKey,
       barNumber: barList.length,
-      firstChord: widget.dbData.firstChord,
-      laterChord: widget.dbData.laterChord,
-      labelName: widget.dbData.labelName,
+      firstChord: firstChordMap,
+      laterChord: laterChordMap,
+      labelName: labelNameMap,
       date: DateTime.now()
     );
 

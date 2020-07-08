@@ -55,7 +55,10 @@ class _KeyBoardState extends State<KeyBoard> {
         keyBoardLayout = [VirtualKeyboardDefaultLayouts.Key];
         break;
       case 'chord':
-        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Chord, VirtualKeyboardDefaultLayouts.Degree];
+        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Chord];
+        break;
+      case 'degree':
+        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Degree];
         break;
       case 'label':
         keyBoardLayout = [VirtualKeyboardDefaultLayouts.Label];
@@ -150,7 +153,7 @@ const List<List> _chordLayout = [
   ],
   // Row 4
   const [
-    VirtualKeyboardKeyAction.SwithLanguage,
+//    VirtualKeyboardKeyAction.SwithLanguage,
     VirtualKeyboardKeyAction.Space,
     VirtualKeyboardKeyAction.Done,
 //    VirtualKeyboardKeyAction.Shift

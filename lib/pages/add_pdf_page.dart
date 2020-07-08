@@ -23,6 +23,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
   List<int> barList = [0];
   int numberOfRow = 4;
   double fontSize = 12.0;
+  static String scoreMode = 'chord';
 
   SaveData _saveData;
 
@@ -60,6 +61,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        centerTitle: true,
         title: Text('スコア作成'),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -75,6 +77,35 @@ class _AddPdfPageState extends State<AddPdfPage> {
           ),
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.more),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    title: Text('記述方法の選択'),
+                    actions: <Widget>[
+                      CupertinoDialogAction(
+                        child: Text('コード'),
+                        onPressed: () {
+                          scoreMode = 'chord';
+                          Navigator.pop(context);
+                        },
+                      ),
+                      CupertinoDialogAction(
+                        child: Text('ディグリー'),
+                        onPressed: () {
+                          scoreMode = 'degree';
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  );
+                }
+              );
+            },
+          ),
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () async{
@@ -342,11 +373,17 @@ class _AddPdfPageState extends State<AddPdfPage> {
           case'musicKey':
             return KeyBoard(musicKeyController, 'musicKey');
             break;
-          case'firstChord':
+          case'firstChord_chord':
             return KeyBoard(firstControllerList[i], 'chord');
             break;
-          case'laterChord':
+          case 'firstChord_degree':
+            return KeyBoard(firstControllerList[i], 'degree');
+            break;
+          case'laterChord_chord':
             return KeyBoard(laterControllerList[i], 'chord');
+            break;
+          case'laterChord_degree':
+            return KeyBoard(laterControllerList[i], 'degree');
             break;
           case'label':
             return KeyBoard(labelControllerList[i], 'label');
@@ -438,7 +475,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                     style: TextStyle(fontSize: fontSize),
 //                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
-                      await showKeyBoard(whichController: 'firstChord', i: barNumber);
+                      await showKeyBoard(whichController: 'firstChord_$scoreMode', i: barNumber);
                     },
                     decoration: InputDecoration(
                       counterText: '',
@@ -461,7 +498,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                     style: TextStyle(fontSize: fontSize),
 //                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
-                      await showKeyBoard(whichController: 'laterChord', i: barNumber);
+                      await showKeyBoard(whichController: 'laterChord_$scoreMode', i: barNumber);
                     },
                     decoration: InputDecoration(
                       hintText: widget.isNew ? null : widget.dbData.laterChord[(barNumber + 1).toString()],

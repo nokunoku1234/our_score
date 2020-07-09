@@ -103,8 +103,29 @@ class _AddPdfPageState extends State<AddPdfPage> {
                       CupertinoDialogAction(
                         child: Text('ダイアトニック'),
                         onPressed: () {
-                          scoreMode = 'diatonic';
-                          Navigator.pop(context);
+                          if(musicKeyController.text == '') {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: Text('エラー'),
+                                  content: Text('keyが入力されていません'),
+                                  actions: <Widget>[
+                                    CupertinoDialogAction(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                    )
+                                  ],
+                                );
+                              }
+                            );
+                          } else {
+                            scoreMode = 'diatonic';
+                            Navigator.pop(context);
+                          }
                         },
                       ),
 
@@ -119,21 +140,21 @@ class _AddPdfPageState extends State<AddPdfPage> {
             onPressed: () async{
               if(titleController.text == "" && widget.isNew == true) {
                 showDialog(
-                    context: context,
-                    builder: (context) {
-                      return CupertinoAlertDialog(
-                        title: Text('エラー'),
-                        content: Text('タイトルが入力されていません'),
-                        actions: <Widget>[
-                          CupertinoDialogAction(
-                            child: Text('OK'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
-                      );
-                    }
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text('エラー'),
+                      content: Text('タイトルが入力されていません'),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    );
+                  }
                 );
               } else {
                 makeList();

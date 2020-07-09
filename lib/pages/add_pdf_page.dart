@@ -31,6 +31,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
   final Map<String, dynamic> laterChordMap = {};
   final Map<String, dynamic> labelNameMap = {};
 
+  List<String> majorKey = ['', 'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
+  List<String> minorKey = ['','Am', 'A#m', 'Bbm', 'Bm', 'Cm', 'C#m', 'Dbm', 'Dm', 'D#m', 'Ebm', 'Em', 'Fm', 'F#m', 'Gbm', 'Gm', 'G#m', 'Abm'];
+
   static List<TextEditingController> firstControllerList = [TextEditingController()];
   static List<TextEditingController> laterControllerList = [TextEditingController()];
   static List<TextEditingController> labelControllerList = [TextEditingController()];
@@ -104,12 +107,33 @@ class _AddPdfPageState extends State<AddPdfPage> {
                         child: Text('ダイアトニック'),
                         onPressed: () {
                           if(musicKeyController.text == '') {
+                            scoreMode = 'chord';
                             showDialog(
                               context: context,
                               builder: (context) {
                                 return CupertinoAlertDialog(
                                   title: Text('エラー'),
                                   content: Text('keyが入力されていません'),
+                                  actions: <Widget>[
+                                    CupertinoDialogAction(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                    )
+                                  ],
+                                );
+                              }
+                            );
+                          } else if(majorKey.contains(musicKeyController.text) == false && minorKey.contains(musicKeyController.text) == false) {
+                            scoreMode = 'chord';
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  title: Text('エラー'),
+                                  content: Text('正しいkeyが入力されていません'),
                                   actions: <Widget>[
                                     CupertinoDialogAction(
                                       child: Text('OK'),
@@ -145,6 +169,24 @@ class _AddPdfPageState extends State<AddPdfPage> {
                     return CupertinoAlertDialog(
                       title: Text('エラー'),
                       content: Text('タイトルが入力されていません'),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    );
+                  }
+                );
+              } else if(majorKey.contains(musicKeyController.text) == false && minorKey.contains(musicKeyController.text) == false) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text('エラー'),
+                      content: Text('正しいkeyが入力されていません'),
                       actions: <Widget>[
                         CupertinoDialogAction(
                           child: Text('OK'),

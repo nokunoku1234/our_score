@@ -22,6 +22,7 @@ class AddPdfPage extends StatefulWidget {
 class _AddPdfPageState extends State<AddPdfPage> {
 
   List<int> barList = [0];
+  List<int> blankBarList = [];
   int numberOfRow = 4;
   double fontSize = 12.0;
   static String scoreMode = 'chord';
@@ -31,6 +32,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
   final Map<String, dynamic> firstChordMap = {};
   final Map<String, dynamic> laterChordMap = {};
   final Map<String, dynamic> labelNameMap = {};
+  final Map<String, dynamic> blankBarMap = {};
 
   List<String> majorKey = ['', 'C', 'C#', 'D♭', 'D', 'D#', 'E♭', 'E', 'F', 'F#', 'G♭', 'G', 'G#', 'A♭', 'A', 'A#', 'B♭', 'B'];
   List<String> minorKey = ['','Am', 'A#m', 'B♭m', 'Bm', 'Cm', 'C#m', 'D♭m', 'Dm', 'D#m', 'E♭m', 'Em', 'Fm', 'F#m', 'G♭m', 'Gm', 'G#m', 'A♭m'];
@@ -51,10 +53,12 @@ class _AddPdfPageState extends State<AddPdfPage> {
     if(widget.isNew == false) {
       makeEditList();
     }
+    scoreMode = 'chord';
   }
 
   void makeEditList() {
     barList = List.generate(widget.dbData.barNumber, (i) => i);
+    widget.dbData.blankBarNumber.forEach((key, value) => blankBarList.add(value));
     firstControllerList = List.generate(widget.dbData.barNumber, (i) => TextEditingController());
     laterControllerList = List.generate(widget.dbData.barNumber, (i) => TextEditingController());
     labelControllerList = List.generate(widget.dbData.barNumber, (i) => TextEditingController());
@@ -81,6 +85,28 @@ class _AddPdfPageState extends State<AddPdfPage> {
           ),
         ),
         actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.cached),
+            onPressed: () {
+              switch(barList.length % numberOfRow) {
+                case 1:
+                  int a = barList.length + (numberOfRow - 1) + 1;
+//                  blankBarList = List.generate(3, (i) => barList.length + i);
+                  for(int i = 0; i < 3; i++) {
+                    blankBarList.add(barList.length + i);
+                  }
+                  barList = List.generate(a, (i) => i);
+                  firstControllerList = List.generate(a, (i) => TextEditingController());
+                  laterControllerList = List.generate(a, (i) => TextEditingController());
+                  labelControllerList = List.generate(a, (i) => TextEditingController());
+
+
+                  break;
+              }
+              setState(() {});
+              print(barList.length);
+            },
+          ),
           IconButton(
             icon: Icon(Icons.more),
             onPressed: () {
@@ -203,8 +229,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                 makeList();
                 createMusic(widget.isNew);
                 String _filePath = await CreatePdf.createPdfA4(_saveData);
-                await Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
+                await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
                 _saveData = SaveData();
               }
             },
@@ -339,6 +364,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
         laterChordMap[(i + 1).toString()] = laterControllerList[i].text;
         labelNameMap[(i + 1).toString()] = labelControllerList[i].text;
       }
+      for(int j = 0; j < blankBarList.length; j++) {
+        blankBarMap[(j + 1).toString()] = blankBarList[j];
+      }
     } else {
       (titleController.text != "") ? widget.dbData.title = titleController.text : widget.dbData.title = widget.dbData.title;
       (musicKeyController.text != "") ? widget.dbData.musicKey = musicKeyController.text : widget.dbData.musicKey = widget.dbData.musicKey;
@@ -353,6 +381,9 @@ class _AddPdfPageState extends State<AddPdfPage> {
             ? labelNameMap[(i + 1).toString()] = labelControllerList[i].text
             : labelNameMap[(i + 1).toString()] = (i + 1 > widget.dbData.barNumber) ? "" : widget.dbData.labelName[(i + 1).toString()];
       }
+      for(int j = 0; j < blankBarList.length; j++) {
+        blankBarMap[(j + 1).toString()] = blankBarList[j];
+      }
     }
 
   }
@@ -362,6 +393,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
       title: titleController.text,
       musicKey: musicKeyController.text,
       barNumber: barList.length,
+      blankBarNumber: blankBarMap,
       firstChord: firstChordMap,
       laterChord: laterChordMap,
       labelName: labelNameMap,
@@ -370,6 +402,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
       title: widget.dbData.title,
       musicKey: widget.dbData.musicKey,
       barNumber: barList.length,
+      blankBarNumber: blankBarMap,
       firstChord: firstChordMap,
       laterChord: laterChordMap,
       labelName: labelNameMap,
@@ -533,17 +566,29 @@ class _AddPdfPageState extends State<AddPdfPage> {
           )
         );
       }
-      _listCache.add(
-       Builder(
-         builder: (context) {
-           return Expanded(
-             child: Container(
-               child: buildColumn(width: 100, height: 7, barNumber: i),
-             ),
-           );
-         },
-       )
-      );
+      if(blankBarList.contains(i) == false) {
+        _listCache.add(
+            Builder(
+            builder: (context) {
+              return Expanded(
+                child: Container(
+                  child: buildColumn(width: 100, height: 7, barNumber: i),
+                ),
+              );
+            },
+          )
+        );
+      } else {
+        _listCache.add(
+          Builder(
+            builder: (context) {
+              return Expanded(
+                child: Container(),
+              );
+            },
+          )
+        );
+      }
       if((i + 1) % numberOfRow == 0) {
         _listColumn.add(Row(children: _listCache,));
         _listCache = [];
@@ -556,6 +601,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
         _listColumn.add(Row(children: _listCache,));
       }
     }
+
 
     return SingleChildScrollView(
       child: Padding(

@@ -11,6 +11,9 @@ class CreatePdf {
   static Future<String> createPdfA4(SaveData saveData) async {
     final Document pdf = Document();
 
+    List<int> blankBarNumber = [];
+    saveData.blankBarNumber.forEach((key, value) => blankBarNumber.add(value));
+
 
     Future<dynamic> getFontData() async {
       final ByteData bytes = await rootBundle.load('assets/fonts/ipaexm.ttf');
@@ -51,7 +54,7 @@ class CreatePdf {
           buildTitle(font, saveData.title, saveData.musicKey),
 
           Padding(padding: EdgeInsets.all(20.0)),
-          buildBars(saveData, font)
+          buildBars(saveData, font, blankBarNumber)
         ],
       ),
     );
@@ -164,7 +167,7 @@ class CreatePdf {
     );
   }
 
-  static Widget buildBars(SaveData saveData, font) {
+  static Widget buildBars(SaveData saveData, font, List<int> blankBarNumber) {
     int numberOfRow = 4;
     List<Widget> _listCache = [];
     List<Widget> _listColumn = [];
@@ -201,17 +204,30 @@ class CreatePdf {
           )
         );
       }
-      _listCache.add(
-        Builder(
-          builder: (context) {
-            return Expanded(
-              child: Container(
-                child: buildColumn(width: 100, height: 7, barNumber: i, saveData: saveData, font: font)
-              ),
-            );
-          }
-        )
+      if(blankBarNumber.contains(i) == false) {
+        _listCache.add(
+          Builder(
+              builder: (context) {
+                return Expanded(
+                  child: Container(
+                      child: buildColumn(width: 100, height: 7, barNumber: i, saveData: saveData, font: font)
+                  ),
+                );
+              }
+          )
       );
+      } else {
+        _listCache.add(
+        Builder(
+            builder: (context) {
+              return Expanded(
+                child: Container(),
+              );
+            }
+          )
+        );
+      }
+
       if((i + 1) % numberOfRow == 0) {
         _listColumn.add(Row(children: _listCache));
         _listColumn.add(Padding(padding: EdgeInsets.all(30.0)));

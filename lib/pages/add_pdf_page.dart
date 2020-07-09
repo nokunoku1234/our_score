@@ -99,7 +99,15 @@ class _AddPdfPageState extends State<AddPdfPage> {
                           scoreMode = 'degree';
                           Navigator.pop(context);
                         },
-                      )
+                      ),
+                      CupertinoDialogAction(
+                        child: Text('ダイアトニック'),
+                        onPressed: () {
+                          scoreMode = 'diatonic';
+                          Navigator.pop(context);
+                        },
+                      ),
+
                     ],
                   );
                 }
@@ -371,22 +379,28 @@ class _AddPdfPageState extends State<AddPdfPage> {
       context: context, builder: (BuildContext context) {
         switch(whichController) {
           case'musicKey':
-            return KeyBoard(musicKeyController, 'musicKey');
+            return KeyBoard(textEditingController: musicKeyController, type: 'musicKey');
             break;
           case'firstChord_chord':
-            return KeyBoard(firstControllerList[i], 'chord');
+            return KeyBoard(textEditingController: firstControllerList[i], type: 'chord');
             break;
           case 'firstChord_degree':
-            return KeyBoard(firstControllerList[i], 'degree');
+            return KeyBoard(textEditingController: firstControllerList[i], type: 'degree');
+            break;
+          case 'firstChord_diatonic':
+            return KeyBoard(textEditingController: firstControllerList[i], type: 'diatonic', whichKey: musicKeyController.text,);
             break;
           case'laterChord_chord':
-            return KeyBoard(laterControllerList[i], 'chord');
+            return KeyBoard(textEditingController: laterControllerList[i], type: 'chord');
             break;
           case'laterChord_degree':
-            return KeyBoard(laterControllerList[i], 'degree');
+            return KeyBoard(textEditingController: laterControllerList[i], type: 'degree');
+            break;
+          case'laterChord_diatonic':
+            return KeyBoard(textEditingController: laterControllerList[i], type: 'diatonic', whichKey: musicKeyController.text,);
             break;
           case'label':
-            return KeyBoard(labelControllerList[i], 'label');
+            return KeyBoard(textEditingController: labelControllerList[i], type: 'label');
             break;
           default:
             return null;

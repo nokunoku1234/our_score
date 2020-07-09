@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:simple_resumaker/model/model.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
@@ -31,8 +32,8 @@ class _AddPdfPageState extends State<AddPdfPage> {
   final Map<String, dynamic> laterChordMap = {};
   final Map<String, dynamic> labelNameMap = {};
 
-  List<String> majorKey = ['', 'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
-  List<String> minorKey = ['','Am', 'A#m', 'Bbm', 'Bm', 'Cm', 'C#m', 'Dbm', 'Dm', 'D#m', 'Ebm', 'Em', 'Fm', 'F#m', 'Gbm', 'Gm', 'G#m', 'Abm'];
+  List<String> majorKey = ['', 'C', 'C#', 'D♭', 'D', 'D#', 'E♭', 'E', 'F', 'F#', 'G♭', 'G', 'G#', 'A♭', 'A', 'A#', 'B♭', 'B'];
+  List<String> minorKey = ['','Am', 'A#m', 'B♭m', 'Bm', 'Cm', 'C#m', 'D♭m', 'Dm', 'D#m', 'E♭m', 'Em', 'Fm', 'F#m', 'G♭m', 'Gm', 'G#m', 'A♭m'];
 
   static List<TextEditingController> firstControllerList = [TextEditingController()];
   static List<TextEditingController> laterControllerList = [TextEditingController()];
@@ -419,6 +420,38 @@ class _AddPdfPageState extends State<AddPdfPage> {
 //                        focusNode: AlwaysDisabledFocusNode(),
                         onTap: () async{
                           await showKeyBoard(whichController: 'musicKey');
+                          switch(musicKeyController.text) {
+                            case 'C#':
+                              musicKeyController.text = 'D♭';
+                              break;
+                            case 'A#m':
+                              musicKeyController.text = 'B♭m';
+                              break;
+                            case 'C♭':
+                              musicKeyController.text = 'B';
+                              break;
+                            case 'A♭m':
+                              musicKeyController.text = 'G#m';
+                              break;
+                            case 'G#':
+                              musicKeyController.text = 'A♭';
+                              break;
+                            case 'E#m':
+                              musicKeyController.text = 'Fm';
+                              break;
+                            case 'D#':
+                              musicKeyController.text = 'E♭';
+                              break;
+                            case 'B#':
+                              musicKeyController.text = 'C';
+                              break;
+                            case 'A#':
+                              musicKeyController.text = 'B♭';
+                              break;
+                            case 'E#':
+                              musicKeyController.text = 'F';
+                              break;
+                          }
                         },
                         decoration: InputDecoration(
                           hintText: widget.isNew ? null : widget.dbData.musicKey,

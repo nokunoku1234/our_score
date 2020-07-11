@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('シンプルスコア'),
+        title: Text('Our Score'),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

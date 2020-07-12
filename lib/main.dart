@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -72,6 +74,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('Our Score'),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -160,7 +163,7 @@ class _HomePageState extends State<HomePage> {
             side: BorderSide(),
           ),
         ),
-        child: Padding(padding: EdgeInsets.all(10.0),)
+        child: Platform.isAndroid ? Padding(padding: EdgeInsets.all(20.0),) : Padding(padding: EdgeInsets.all(10.0))
       ),
     );
   }

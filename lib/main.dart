@@ -6,6 +6,7 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:simple_resumaker/pages/add_pdf_page.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
+import 'package:simple_resumaker/pages/splash_screen.dart';
 import 'package:simple_resumaker/utils/admob.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
@@ -23,36 +24,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FutureBuilder(
-        future: setting(),
-        builder:(BuildContext context, AsyncSnapshot snapshot) {
-          if(snapshot.connectionState == ConnectionState.done) {
-            return HomePage();
-          } else {
-            return Container();
-          }
-        },
-      ),
+      home: SplashScreen()
     );
   }
 
-  Future<void> setting() async {
-    AdMob.deviceData =  await AdMob.getDeviceData();
-  }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+  HomePage({Key key, this.title, this.setDb}) : super(key: key);
 
   final String title;
+  final Function setDb;
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-  List<SaveData> dbData = [];
 
   Future<void> setDb() async{
     await DbProvider.setDb();
@@ -67,13 +55,13 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    setDb();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 5,
         centerTitle: true,
         title: Text('Our Score'),
         flexibleSpace: Container(
@@ -155,6 +143,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        elevation: 5,
         color: Colors.lightBlueAccent,
         notchMargin: 6.0,
         shape: AutomaticNotchedShape(

@@ -1,6 +1,8 @@
 PODS:
   - device_info (0.0.1):
     - Flutter
+  - documents_picker (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_google_ad_manager (0.0.1):
     - Flutter
@@ -51,6 +53,7 @@ PODS:
 
 DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
+  - documents_picker (from `.symlinks/plugins/documents_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_google_ad_manager (from `.symlinks/plugins/flutter_google_ad_manager/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
@@ -70,6 +73,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
+  documents_picker:
+    :path: ".symlinks/plugins/documents_picker/ios"
   Flutter:
     :path: Flutter
   flutter_google_ad_manager:
@@ -87,6 +92,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   device_info: 3ebad48f726348f69abd802f3334a8d1ed795fbd
+  documents_picker: 5af54172fc411009a331391a6264987a852fcef8
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_google_ad_manager: 6500e04ad927e5c4b8f5286a87aa138aac13feb4
   flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd

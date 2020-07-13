@@ -29,8 +29,8 @@ class AdMob {
   static getInterstitialUnitId() {
     return
       Platform.isAndroid
-          ? 'ca-app-pub-6087076072607667~3698920983'
-          : 'ca-app-pub-6087076072607667~4800249660';
+          ? ''
+          : '';
   }
 
   static reload() {

@@ -14,6 +14,15 @@ class CreatePdf {
     List<int> blankBarNumber = [];
     saveData.blankBarNumber.forEach((key, value) => blankBarNumber.add(value));
 
+    Future<dynamic> getImage() async{
+      final ByteData bytes = await rootBundle.load('assets/image/osorosso_logo.png');
+      final Uint8List imageData = bytes.buffer.asUint8List();
+
+      final _image = PdfImage.file(pdf.document, bytes: imageData);
+      return _image;
+    }
+
+    var image = await getImage();
 
     Future<dynamic> getFontData() async {
       final ByteData bytes = await rootBundle.load('assets/fonts/ipaexm.ttf');
@@ -29,30 +38,30 @@ class CreatePdf {
 
     pdf.addPage(
       MultiPage(
-        margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 50.0),
+        margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
         pageFormat: PdfPageFormat.a4,
         orientation: PageOrientation.portrait,
-//        header: (Context context) {
-//          if (context.pageNumber == 1) {
-//            return null;
-//          }
-//          return Container(
-//            margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-//            padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-//            decoration: const BoxDecoration(
-//                border:
-//                BoxBorder(bottom: true, width: 0.5, color: PdfColors.grey)),
-//            child: Text(
-//              'Portable Document Format',
-//              style: Theme.of(context)
-//                  .defaultTextStyle
-//                  .copyWith(color: PdfColors.grey),
-//            ),
-//          );
-//        },
+        header: (Context context) {
+          if (context.pageNumber == 1) {
+            return null;
+          }
+          return Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: Container(
+                child: Image(image, width: 100)
+            )
+          );
+        },
         build: (Context context) => <Widget>[
-          buildTitle(font, saveData.title, saveData.musicKey),
-
+          Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              buildTitle(font, saveData.title, saveData.musicKey),
+              Container(
+                  child: Image(image, width: 100)
+              ),
+            ]
+          ),
           Padding(padding: EdgeInsets.all(20.0)),
           buildBars(saveData, font, blankBarNumber)
         ],
@@ -158,11 +167,32 @@ class CreatePdf {
         Center(
           child: Text(title, style: TextStyle(fontSize: 20.0, font: font)),
         ),
-        Padding(padding: EdgeInsets.all(10.0)),
-        Container(
-          alignment: Alignment.centerRight,
-          child: Text('key = $musicKey', style: TextStyle(font: font, fontSize: 13)),
+        Padding(
+          padding: EdgeInsets.all(10)
         ),
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: Text('♩ = $musicKey', style: TextStyle(font: font, fontSize: 13)),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: Text('key = $musicKey', style: TextStyle(font: font, fontSize: 13)),
+              ),
+            )
+          ]
+        )
       ]
     );
   }

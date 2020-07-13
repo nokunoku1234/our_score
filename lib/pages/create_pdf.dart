@@ -38,7 +38,7 @@ class CreatePdf {
 
     pdf.addPage(
       MultiPage(
-        margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
+        margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 30.0),
         pageFormat: PdfPageFormat.a4,
         orientation: PageOrientation.portrait,
         header: (Context context) {
@@ -56,7 +56,7 @@ class CreatePdf {
           Stack(
             alignment: Alignment.topLeft,
             children: [
-              buildTitle(font, saveData.title, saveData.musicKey),
+              buildTitle(font, saveData.title, saveData.musicKey, saveData.temp),
               Container(
                   child: Image(image, width: 100)
               ),
@@ -161,7 +161,7 @@ class CreatePdf {
         );
   }
 
-  static Column buildTitle(font, title, musicKey) {
+  static Column buildTitle(font, title, musicKey, temp) {
     return Column(
       children: [
         Center(
@@ -181,13 +181,13 @@ class CreatePdf {
               flex: 1,
               child: Container(
                 alignment: Alignment.centerRight,
-                child: Text('♩ = $musicKey', style: TextStyle(font: font, fontSize: 13)),
+                child: Text('♩ = $temp', style: TextStyle(font: font, fontSize: 13)),
               ),
             ),
             Expanded(
               flex: 1,
               child: Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.center,
                 child: Text('key = $musicKey', style: TextStyle(font: font, fontSize: 13)),
               ),
             )

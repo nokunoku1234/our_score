@@ -43,6 +43,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
   TextEditingController titleController = TextEditingController();
   static TextEditingController musicKeyController = TextEditingController();
+  TextEditingController tempController = TextEditingController();
 
   @override
   void initState() {
@@ -409,6 +410,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     } else {
       (titleController.text != "") ? widget.dbData.title = titleController.text : widget.dbData.title = widget.dbData.title;
       (musicKeyController.text != "") ? widget.dbData.musicKey = musicKeyController.text : widget.dbData.musicKey = widget.dbData.musicKey;
+      (tempController.text != "") ? widget.dbData.temp = int.parse(tempController.text) : widget.dbData.temp = widget.dbData.temp;
       for(int i = 0; i < barList.length; i++) {
         (firstControllerList[i].text != "")
             ? firstChordMap[(i + 1).toString()] = firstControllerList[i].text
@@ -431,6 +433,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     _saveData =  isNew ? SaveData(
       title: titleController.text,
       musicKey: musicKeyController.text,
+      temp: int.parse(tempController.text),
       barNumber: barList.length,
       blankBarNumber: blankBarMap,
       firstChord: firstChordMap,
@@ -440,6 +443,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     ) : SaveData(
       title: widget.dbData.title,
       musicKey: widget.dbData.musicKey,
+      temp: widget.dbData.temp,
       barNumber: barList.length,
       blankBarNumber: blankBarMap,
       firstChord: firstChordMap,
@@ -455,87 +459,116 @@ class _AddPdfPageState extends State<AddPdfPage> {
   Widget buildTitle() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 30.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
         children: <Widget>[
-          Expanded(flex: 1, child: Container()),
-          Expanded(
-            flex: 2,
-            child: Container(
-                child: Center(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: widget.isNew ? 'タイトルを入力' : widget.dbData.title,
-                    ),
-                    textAlign: TextAlign.center,
-                    controller: titleController,
-                    style: TextStyle(fontSize: 25.0),
+          Container(
+              child: Center(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: widget.isNew ? 'タイトルを入力' : widget.dbData.title,
                   ),
-                )
-            )
+                  textAlign: TextAlign.center,
+                  controller: titleController,
+                  style: TextStyle(fontSize: 25.0),
+                ),
+              )
           ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text('key = '),
-                    Container(
-                      height: 15,
-                      width: 35,
-                      child: TextField(
-                        readOnly: true,
-                        style: TextStyle(fontSize: fontSize),
-//                        focusNode: AlwaysDisabledFocusNode(),
-                        onTap: () async{
-                          await showKeyBoard(whichController: 'musicKey');
-                          switch(musicKeyController.text) {
-                            case 'C#':
-                              musicKeyController.text = 'D♭';
-                              break;
-                            case 'A#m':
-                              musicKeyController.text = 'B♭m';
-                              break;
-                            case 'C♭':
-                              musicKeyController.text = 'B';
-                              break;
-                            case 'A♭m':
-                              musicKeyController.text = 'G#m';
-                              break;
-                            case 'G#':
-                              musicKeyController.text = 'A♭';
-                              break;
-                            case 'E#m':
-                              musicKeyController.text = 'Fm';
-                              break;
-                            case 'D#':
-                              musicKeyController.text = 'E♭';
-                              break;
-                            case 'B#':
-                              musicKeyController.text = 'C';
-                              break;
-                            case 'A#':
-                              musicKeyController.text = 'B♭';
-                              break;
-                            case 'E#':
-                              musicKeyController.text = 'F';
-                              break;
-                          }
-                        },
-                        decoration: InputDecoration(
-                          hintText: widget.isNew ? null : widget.dbData.musicKey,
+          Padding(padding: EdgeInsets.only(top: 20),),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Expanded(flex: 2, child: Container()),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text('♩ = '),
+                        Container(
+                          height: 15,
+                          width: 35,
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(fontSize: fontSize),
+                            decoration: InputDecoration(
+                              hintText: widget.isNew ? null : widget.dbData.temp.toString(),
+                            ),
+                            textAlign: TextAlign.center,
+                            controller: tempController,
+                          ),
                         ),
-                        textAlign: TextAlign.center,
-                        controller: musicKeyController,
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text('key = '),
+                        Container(
+                          height: 15,
+                          width: 35,
+                          child: TextField(
+                            readOnly: true,
+                            style: TextStyle(fontSize: fontSize),
+//                        focusNode: AlwaysDisabledFocusNode(),
+                            onTap: () async{
+                              await showKeyBoard(whichController: 'musicKey');
+                              switch(musicKeyController.text) {
+                                case 'C#':
+                                  musicKeyController.text = 'D♭';
+                                  break;
+                                case 'A#m':
+                                  musicKeyController.text = 'B♭m';
+                                  break;
+                                case 'C♭':
+                                  musicKeyController.text = 'B';
+                                  break;
+                                case 'A♭m':
+                                  musicKeyController.text = 'G#m';
+                                  break;
+                                case 'G#':
+                                  musicKeyController.text = 'A♭';
+                                  break;
+                                case 'E#m':
+                                  musicKeyController.text = 'Fm';
+                                  break;
+                                case 'D#':
+                                  musicKeyController.text = 'E♭';
+                                  break;
+                                case 'B#':
+                                  musicKeyController.text = 'C';
+                                  break;
+                                case 'A#':
+                                  musicKeyController.text = 'B♭';
+                                  break;
+                                case 'E#':
+                                  musicKeyController.text = 'F';
+                                  break;
+                              }
+                            },
+                            decoration: InputDecoration(
+                              hintText: widget.isNew ? null : widget.dbData.musicKey,
+                            ),
+                            textAlign: TextAlign.center,
+                            controller: musicKeyController,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

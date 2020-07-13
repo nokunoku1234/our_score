@@ -8,6 +8,7 @@ class SaveData {
   int id;
   String title;
   String musicKey;
+  int temp;
   int barNumber;
   Map<String, dynamic> blankBarNumber;
   Map<String, dynamic> firstChord;
@@ -15,7 +16,7 @@ class SaveData {
   Map<String, dynamic> labelName;
   DateTime date;
 
-  SaveData({this.id, this.title, this.musicKey, this.barNumber, this.blankBarNumber, this.firstChord, this.laterChord, this.labelName, this.date});
+  SaveData({this.id, this.title, this.musicKey, this.temp, this.barNumber, this.blankBarNumber, this.firstChord, this.laterChord, this.labelName, this.date});
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {};
@@ -23,6 +24,7 @@ class SaveData {
     map['id'] = id;
     map['title'] = title;
     map['music_key'] = musicKey;
+    map['temp'] = temp;
     map['bar_number'] = barNumber;
     map['blank_bar_number'] = jsonEncode(blankBarNumber);
     map['first_chord'] = jsonEncode(firstChord);

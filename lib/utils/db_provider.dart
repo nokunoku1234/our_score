@@ -26,7 +26,7 @@ class DbProvider {
 
   static Future<void> _createTable(Database db, int version) async{
     return await db.execute(
-      "CREATE TABLE chord_maker(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, music_key TEXT, bar_number INTEGER, blank_bar_number TEXT, first_chord TEXT, later_chord TEXT, label_name TEXT, date TEXT)"
+      "CREATE TABLE chord_maker(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, music_key TEXT, temp INTEGER, bar_number INTEGER, blank_bar_number TEXT, first_chord TEXT, later_chord TEXT, label_name TEXT, date TEXT)"
     );
   }
 
@@ -44,6 +44,7 @@ class DbProvider {
         id: maps[i]['id'],
         title: maps[i]['title'],
         musicKey: maps[i]['music_key'],
+        temp: maps[i]['temp'],
         barNumber: maps[i]['bar_number'],
         blankBarNumber: jsonDecode(maps[i]['blank_bar_number']),
         firstChord: jsonDecode(maps[i]['first_chord']),
@@ -61,6 +62,7 @@ class DbProvider {
       'title': saveData.title,
       'music_key': saveData.musicKey,
       'bar_number': saveData.barNumber,
+      'temp': saveData.temp,
       'blank_bar_number': jsonEncode(saveData.blankBarNumber),
       'first_chord': jsonEncode(saveData.firstChord),
       'later_chord': jsonEncode(saveData.laterChord),

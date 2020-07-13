@@ -93,33 +93,40 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   int totalBarNum = barList.length + (numberOfRow - 1) + 1;
                   for(int i = 0; i < 3; i++) {
                     blankBarList.add(barList.length + i);
+                    firstControllerList.add(TextEditingController());
+                    laterControllerList.add(TextEditingController());
+                    labelControllerList.add(TextEditingController());
                   }
+                  firstControllerList.add(TextEditingController());
+                  laterControllerList.add(TextEditingController());
+                  labelControllerList.add(TextEditingController());
                   barList = List.generate(totalBarNum, (i) => i);
-                  firstControllerList = List.generate(totalBarNum, (i) => TextEditingController());
-                  laterControllerList = List.generate(totalBarNum, (i) => TextEditingController());
-                  labelControllerList = List.generate(totalBarNum, (i) => TextEditingController());
                   break;
                 case 2:
                   int totalBarNum = barList.length + (numberOfRow - 2) + 1;
                   for(int i = 0; i < 2; i++) {
                     blankBarList.add(barList.length + i);
+                    firstControllerList.add(TextEditingController());
+                    laterControllerList.add(TextEditingController());
+                    labelControllerList.add(TextEditingController());
                   }
+                  firstControllerList.add(TextEditingController());
+                  laterControllerList.add(TextEditingController());
+                  labelControllerList.add(TextEditingController());
                   barList = List.generate(totalBarNum, (i) => i);
-                  firstControllerList = List.generate(totalBarNum, (i) => TextEditingController());
-                  laterControllerList = List.generate(totalBarNum, (i) => TextEditingController());
-                  labelControllerList = List.generate(totalBarNum, (i) => TextEditingController());
                   break;
                 case 3:
                   int totalBarNum = barList.length + (numberOfRow - 3) + 1;
                   blankBarList.add(barList.length);
                   barList = List.generate(totalBarNum, (i) => i);
-                  firstControllerList = List.generate(totalBarNum, (i) => TextEditingController());
-                  laterControllerList = List.generate(totalBarNum, (i) => TextEditingController());
-                  labelControllerList = List.generate(totalBarNum, (i) => TextEditingController());
+                  for(int i = 0; i < 2; i++) {
+                    firstControllerList.add(TextEditingController());
+                    laterControllerList.add(TextEditingController());
+                    labelControllerList.add(TextEditingController());
+                  }
                   break;
               }
               setState(() {});
-              print(barList.length);
             },
           ),
           IconButton(
@@ -375,10 +382,16 @@ class _AddPdfPageState extends State<AddPdfPage> {
   }
 
   void clearText() {
-    for(int i = 0; i < barList.length; i++) {
-      firstControllerList[i].clear();
-      laterControllerList[i].clear();
-      labelControllerList[i].clear();
+    if(widget.isNew) {
+      firstControllerList = [TextEditingController()];
+      laterControllerList = [TextEditingController()];
+      labelControllerList = [TextEditingController()];
+    } else {
+      for(int i = 0; i < barList.length; i++) {
+        firstControllerList[i].clear();
+        laterControllerList[i].clear();
+        labelControllerList[i].clear();
+      }
     }
     musicKeyController.clear();
   }

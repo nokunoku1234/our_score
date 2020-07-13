@@ -2,11 +2,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_resumaker/main.dart';
-import 'package:simple_resumaker/model/model.dart';
 import 'package:simple_resumaker/utils/admob.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
-List<SaveData> dbData = [];
 
 class SplashScreen extends StatefulWidget {
   @override

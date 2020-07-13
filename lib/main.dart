@@ -14,6 +14,7 @@ import 'model/model.dart';
 
 void main() => runApp(MyApp());
 Color primaryColor = Colors.blue;
+List<SaveData> dbData = [];
 
 class MyApp extends StatelessWidget {
   @override

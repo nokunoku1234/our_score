@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_google_ad_manager/flutter_google_ad_manager.dart';
 
 class AdMob {
-  static final isTest = true;
+  static final isTest = false;
   static final isVisible = true;
 
   static double smartBannerWidth = 0.0;
@@ -22,15 +22,15 @@ class AdMob {
   static getBannerUnitId() {
     return
       Platform.isAndroid
-          ? ''
-          : '';
+          ? 'ca-app-pub-6087076072607667/2385839317'
+          : 'ca-app-pub-6087076072607667/5203574341';
   }
 
   static getInterstitialUnitId() {
     return
       Platform.isAndroid
-          ? ''
-          : '';
+          ? 'ca-app-pub-6087076072607667~3698920983'
+          : 'ca-app-pub-6087076072607667~4800249660';
   }
 
   static reload() {
@@ -235,8 +235,8 @@ class MyTestDevices extends TestDevices {
 
   @override
   List<String> get values => List()
-    ..add('0F7B8121162BD49C306539490D25FB70') //井上Android
-    ..add('0105344bae7a74342068be72fe5033a0') //井上iPhoneX
+//    ..add('0F7B8121162BD49C306539490D25FB70') //井上Android
+//    ..add('0105344bae7a74342068be72fe5033a0') //井上iPhoneX
     ..add('b4cc3764a6802af0cd7810e5cee84399'); //奥野iPhoneXR
 
 }

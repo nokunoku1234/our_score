@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         elevation: 5,
         centerTitle: true,
-        title: Text('Our Score', style: TextStyle(fontSize: 28),),
+        title: Text('Our Score', style: TextStyle(fontSize: 25),),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

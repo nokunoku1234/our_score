@@ -4,8 +4,9 @@ import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.
 class KeyBoard extends StatefulWidget {
   final TextEditingController textEditingController;
   final String type;
+  final String whichKey;
 
-  KeyBoard(this.textEditingController, this.type);
+  KeyBoard({this.textEditingController, this.type, this.whichKey});
 
   @override
   _KeyBoardState createState() => _KeyBoardState();
@@ -14,7 +15,6 @@ class KeyBoard extends StatefulWidget {
 class _KeyBoardState extends State<KeyBoard> {
   // Holds the text that user typed.
   String text = '';
-  CustomLayoutKeys _customLayoutKeys;
   // True if shift enabled.
   bool shiftEnabled = false;
 
@@ -27,7 +27,6 @@ class _KeyBoardState extends State<KeyBoard> {
   void initState() {
     super.initState();
 
-    _customLayoutKeys = CustomLayoutKeys();
     selectKeyBoardType();
   }
 
@@ -40,7 +39,6 @@ class _KeyBoardState extends State<KeyBoard> {
         //width: 500,
         textColor: Colors.white,
         textController: widget.textEditingController,
-        //customLayoutKeys: _customLayoutKeys,
         defaultLayouts: keyBoardLayout,
         //reverseLayout :true,
         type: VirtualKeyboardType.Alphanumeric,
@@ -55,7 +53,39 @@ class _KeyBoardState extends State<KeyBoard> {
         keyBoardLayout = [VirtualKeyboardDefaultLayouts.Key];
         break;
       case 'chord':
-        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Chord, VirtualKeyboardDefaultLayouts.Degree];
+        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Chord];
+        break;
+      case 'degree':
+        keyBoardLayout = [VirtualKeyboardDefaultLayouts.Degree];
+        break;
+      case 'diatonic':
+        if(widget.whichKey == 'C' || widget.whichKey == 'Am') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.CDiatonic];
+        } else if(widget.whichKey == 'G' || widget.whichKey == 'Em') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.GDiatonic];
+        } else if(widget.whichKey == 'D' || widget.whichKey == 'Bm') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.DDiatonic];
+        } else if(widget.whichKey == 'A' || widget.whichKey == 'F#m') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.ADiatonic];
+        } else if(widget.whichKey == 'E' || widget.whichKey == 'C#m') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.EDiatonic];
+        } else if(widget.whichKey == 'B' || widget.whichKey == 'G#m') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.BDiatonic];
+        } else if(widget.whichKey == 'F#' || widget.whichKey == 'D#m') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.FsharpDiatonic];
+        } else if(widget.whichKey == 'F' || widget.whichKey == 'Dm') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.FDiatonic];
+        } else if(widget.whichKey == 'Bb' || widget.whichKey == 'Gm') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.BflatDiatonic];
+        } else if(widget.whichKey == 'Eb' || widget.whichKey == 'Cm') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.EflatDiatonic];
+        } else if(widget.whichKey == 'Ab' || widget.whichKey == 'Fm') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.AflatDiatonic];
+        } else if(widget.whichKey == 'Db' || widget.whichKey == 'Bbm') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.DflatDiatonic];
+        } else if(widget.whichKey == 'Gb' || widget.whichKey == 'Ebm') {
+          keyBoardLayout = [VirtualKeyboardDefaultLayouts.GflatDiatonic];
+        }
         break;
       case 'label':
         keyBoardLayout = [VirtualKeyboardDefaultLayouts.Label];
@@ -91,69 +121,3 @@ class _KeyBoardState extends State<KeyBoard> {
   }
 }
 
-class CustomLayoutKeys extends VirtualKeyboardLayoutKeys{
-
-  @override
-  int getLanguagesCount() => 2;
-
-  List<List> getLanguage(int index){
-    switch(index){
-      case 1:
-        return _chordLayout;
-      default:
-        return defaultEnglishLayout;
-    }
-  }
-
-}
-
-
-const List<List> _chordLayout = [
-  // Row 1
-  const [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '0',
-  ],
-  // Row 2
-  const [
-    'alt',
-    'omit',
-    'add',
-    'sus',
-    'φ',
-    'dim',
-    'aug',
-    'm',
-    'M',
-    '/',
-  ],
-  // Row 3
-  const [
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'A',
-    'B',
-    '♭',
-    '#',
-    VirtualKeyboardKeyAction.Backspace,
-  ],
-  // Row 4
-  const [
-    VirtualKeyboardKeyAction.SwithLanguage,
-    VirtualKeyboardKeyAction.Space,
-    VirtualKeyboardKeyAction.Done,
-//    VirtualKeyboardKeyAction.Shift
-  ],
-
-];

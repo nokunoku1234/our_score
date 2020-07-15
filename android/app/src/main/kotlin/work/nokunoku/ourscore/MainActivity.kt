@@ -1,4 +1,4 @@
-package com.example.simple_resumaker
+package work.nokunoku.ourscore
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

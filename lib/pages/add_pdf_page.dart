@@ -433,7 +433,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     _saveData =  isNew ? SaveData(
       title: titleController.text,
       musicKey: musicKeyController.text,
-      temp: int.parse(tempController.text),
+      temp: (tempController.text == '') ? null : int.parse(tempController.text),
       barNumber: barList.length,
       blankBarNumber: blankBarMap,
       firstChord: firstChordMap,

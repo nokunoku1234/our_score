@@ -181,7 +181,7 @@ class CreatePdf {
               flex: 1,
               child: Container(
                 alignment: Alignment.centerRight,
-                child: Text('♩ = $temp', style: TextStyle(font: font, fontSize: 13)),
+                child: (temp == null) ? Text('♩ = ', style: TextStyle(font: font, fontSize: 13)) : Text('♩ = $temp', style: TextStyle(font: font, fontSize: 13)),
               ),
             ),
             Expanded(

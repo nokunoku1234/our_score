@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "259186277491",
+    "firebase_url": "https://our-score-504c2.firebaseio.com",
+    "project_id": "our-score-504c2",
+    "storage_bucket": "our-score-504c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259186277491:android:e1eb0d5603c8297a763e06",
+        "android_client_info": {
+          "package_name": "work.nokunoku.ourscore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259186277491-gg78mhd5lbgkaa6cem787lm7o8h58s75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA21-bDeCWL8-9G7RaFjTdaI1RB8fSDYGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259186277491-gg78mhd5lbgkaa6cem787lm7o8h58s75.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "259186277491-g1hti0v9jvjdvd12rgqe08vsm35ek1pu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "work.nokunoku.ourscore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

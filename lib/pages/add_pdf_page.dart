@@ -534,7 +534,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                             keyboardType: TextInputType.number,
                             style: TextStyle(fontSize: fontSize),
                             decoration: InputDecoration(
-                              hintText: widget.isNew ? null : widget.dbData.temp.toString(),
+                              hintText: widget.isNew ? null : widget.dbData.temp == null ? '' : widget.dbData.temp.toString(),
                             ),
                             textAlign: TextAlign.center,
                             controller: tempController,

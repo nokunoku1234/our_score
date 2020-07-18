@@ -117,6 +117,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                     );
                   }
                 );
+                break;
               } else {
                 Navigator.pop(context);
                 break;

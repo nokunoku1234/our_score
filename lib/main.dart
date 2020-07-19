@@ -81,9 +81,19 @@ class _HomePageState extends State<HomePage> {
       ),
       body: dbData.length == 0 ?
       Center(
-        child: Container(
-          child: Image.asset('assets/image/our_score_bgimage.png'),
-          width: MediaQuery.of(context).size.width*0.8,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              child: Image.asset('assets/image/our_score_bgimage.png'),
+              width: MediaQuery.of(context).size.width*0.8,
+              height: double.infinity,
+            ),
+            Padding(
+              padding:EdgeInsets.only(bottom: 28.0),
+              child: AdMob.getBannerContainer(context),
+            ),
+          ],
         ),
       )
       : Column(

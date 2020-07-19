@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -84,6 +86,44 @@ class _AddPdfPageState extends State<AddPdfPage> {
               ]
             )
           ),
+        ),
+        leading: IconButton(
+          icon: Platform.isAndroid ? Icon(Icons.arrow_back) : Icon(Icons.arrow_back_ios),
+          color: Colors.white,
+          onPressed: () {
+            for(int i = 0; i < laterControllerList.length; i++) {
+              if(titleController.text.isNotEmpty || musicKeyController.text.isNotEmpty || tempController.text.isNotEmpty || firstControllerList[i].text.isNotEmpty || laterControllerList[i].text.isNotEmpty || labelControllerList[i].text.isNotEmpty) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text('トップ画面に戻りますか？'),
+                      content: Text('入力内容は保存されません。'),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                        ),
+                        CupertinoDialogAction(
+                          child: Text('キャンセル', style: TextStyle(color: Colors.red),),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    );
+                  }
+                );
+                break;
+              } else {
+                Navigator.pop(context);
+                break;
+              }
+            }
+          },
         ),
         actions: <Widget>[
           IconButton(
@@ -494,7 +534,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                             keyboardType: TextInputType.number,
                             style: TextStyle(fontSize: fontSize),
                             decoration: InputDecoration(
-                              hintText: widget.isNew ? null : widget.dbData.temp.toString(),
+                              hintText: widget.isNew ? null : widget.dbData.temp == null ? '' : widget.dbData.temp.toString(),
                             ),
                             textAlign: TextAlign.center,
                             controller: tempController,

@@ -85,8 +85,8 @@ class _HomePageState extends State<HomePage> {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              child: Image.asset('assets/image/our_score_bgimage.png'),
-              width: MediaQuery.of(context).size.width*0.8,
+              child: Image.asset('assets/image/our_score_bgimage_2.png'),
+//              width: MediaQuery.of(context).size.width*0.8,
               height: double.infinity,
             ),
             Padding(

@@ -564,34 +564,34 @@ class _AddPdfPageState extends State<AddPdfPage> {
                             onTap: () async{
                               await showKeyBoard(whichController: 'musicKey');
                               switch(musicKeyController.text) {
-                                case 'C#':
+                                case 'C♯':
                                   musicKeyController.text = 'D♭';
                                   break;
-                                case 'A#m':
+                                case 'A♯m':
                                   musicKeyController.text = 'B♭m';
                                   break;
                                 case 'C♭':
                                   musicKeyController.text = 'B';
                                   break;
                                 case 'A♭m':
-                                  musicKeyController.text = 'G#m';
+                                  musicKeyController.text = 'G♯m';
                                   break;
-                                case 'G#':
+                                case 'G♯':
                                   musicKeyController.text = 'A♭';
                                   break;
-                                case 'E#m':
+                                case 'E♯m':
                                   musicKeyController.text = 'Fm';
                                   break;
-                                case 'D#':
+                                case 'D♯':
                                   musicKeyController.text = 'E♭';
                                   break;
-                                case 'B#':
+                                case 'B♯':
                                   musicKeyController.text = 'C';
                                   break;
-                                case 'A#':
+                                case 'A♯':
                                   musicKeyController.text = 'B♭';
                                   break;
-                                case 'E#':
+                                case 'E♯':
                                   musicKeyController.text = 'F';
                                   break;
                               }

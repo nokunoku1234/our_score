@@ -38,7 +38,7 @@ class CreatePdf {
 
     pdf.addPage(
       MultiPage(
-        margin: EdgeInsets.symmetric(horizontal: 50.0, vertical: 30.0),
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 30.0),
         pageFormat: PdfPageFormat.a4,
         orientation: PageOrientation.portrait,
         header: (Context context) {
@@ -48,7 +48,7 @@ class CreatePdf {
           return Padding(
             padding: EdgeInsets.only(bottom: 20),
             child: Container(
-                child: Image(image, width: 100)
+                child: Image(image, width: 70)
             )
           );
         },
@@ -57,12 +57,15 @@ class CreatePdf {
             alignment: Alignment.topLeft,
             children: [
               buildTitle(font, saveData.title, saveData.musicKey, saveData.temp),
-              Container(
-                  child: Image(image, width: 100)
-              ),
+              Padding(
+                padding: EdgeInsets.only(left: 50.0),
+                child: Container(
+                  child: Image(image, width: 70)
+                ),
+              )
             ]
           ),
-          Padding(padding: EdgeInsets.all(20.0)),
+          Padding(padding: EdgeInsets.all(15.0)),
           buildBars(saveData, font, blankBarNumber)
         ],
       ),
@@ -122,7 +125,7 @@ class CreatePdf {
               ),
             ),
             Container(
-              width: 100,
+              width: width,
               height: 7,
               decoration: BoxDecoration(
                 border: BoxBorder(
@@ -134,7 +137,7 @@ class CreatePdf {
               ),
             ),
             Container(
-              width: 100,
+              width: width,
               height: 7,
               decoration: BoxDecoration(
                 border: BoxBorder(
@@ -146,7 +149,7 @@ class CreatePdf {
               ),
             ),
             Container(
-              width: 100,
+              width: width,
               height: 7,
               decoration: BoxDecoration(
                 border: BoxBorder(
@@ -206,7 +209,7 @@ class CreatePdf {
       if((i + 1) % numberOfRow == 1 && saveData.labelName[(i + 1).toString()] != "") {
         _listCache.add(
           Padding(
-            padding: EdgeInsets.only(top: 20, right: 20),
+            padding: EdgeInsets.only(top: 20, right: 10),
             child: Container(
               decoration: BoxDecoration(
                 border: BoxBorder(
@@ -226,7 +229,7 @@ class CreatePdf {
       } else if((i + 1) % numberOfRow == 1 && saveData.labelName[(i + 1).toString()] == "") {
         _listCache.add(
           Padding(
-              padding: EdgeInsets.only(top: 20, right: 20),
+              padding: EdgeInsets.only(top: 20, right: 10),
               child: Container(
                   width: 60,
                   height: 28,
@@ -240,7 +243,7 @@ class CreatePdf {
               builder: (context) {
                 return Expanded(
                   child: Container(
-                      child: buildColumn(width: 100, height: 7, barNumber: i, saveData: saveData, font: font)
+                      child: buildColumn(width: 120, height: 7, barNumber: i, saveData: saveData, font: font)
                   ),
                 );
               }
@@ -260,7 +263,7 @@ class CreatePdf {
 
       if((i + 1) % numberOfRow == 0) {
         _listColumn.add(Row(children: _listCache));
-        _listColumn.add(Padding(padding: EdgeInsets.all(30.0)));
+        _listColumn.add(Padding(padding: EdgeInsets.all(15.0)));
         _listCache = [];
       } else if(i + 1 == saveData.barNumber) {
         for(int j = 0; j < numberOfRow - (i + 1) % numberOfRow; j++) {

@@ -740,7 +740,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                     readOnly: true,
                     textAlignVertical: TextAlignVertical.bottom,
                     enabled: true,
-                    style: TextStyle(fontSize: fontSize),
+                    style: TextStyle(fontSize: 11),
 //                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'firstChord_$scoreMode', i: barNumber);
@@ -763,7 +763,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   child: TextField(
                     readOnly: true,
                     textAlignVertical: TextAlignVertical.bottom,
-                    style: TextStyle(fontSize: fontSize),
+                    style: TextStyle(fontSize: 11),
 //                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'laterChord_$scoreMode', i: barNumber);

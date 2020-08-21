@@ -45,11 +45,8 @@ class CreatePdf {
           if (context.pageNumber == 1) {
             return null;
           }
-          return Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: Container(
-                child: Image(image, width: 70)
-            )
+          return Container(
+            child: Image(image, width: 70)
           );
         },
         build: (Context context) => <Widget>[
@@ -57,12 +54,9 @@ class CreatePdf {
             alignment: Alignment.topLeft,
             children: [
               buildTitle(font, saveData.title, saveData.musicKey, saveData.temp),
-              Padding(
-                padding: EdgeInsets.only(left: 50.0),
-                child: Container(
-                  child: Image(image, width: 70)
-                ),
-              )
+              Container(
+                child: Image(image, width: 70)
+              ),
             ]
           ),
           Padding(padding: EdgeInsets.all(15.0)),
@@ -95,7 +89,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 20),
-                        child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 12, font: font))
+                        child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 10, font: font))
                       ),
                     ),
                   ),
@@ -105,7 +99,7 @@ class CreatePdf {
                       width: width / 2,
                       child: Padding(
                         padding: EdgeInsets.only(bottom: 20),
-                        child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 12, font: font))
+                        child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 10, font: font))
                       ),
                     ),
                   ),
@@ -219,10 +213,10 @@ class CreatePdf {
                   left: true,
                 )
               ),
-              width: 60,
+              width: 50,
               height: 28,
               alignment: Alignment.center,
-              child: Text(saveData.labelName[(i + 1).toString()], style: TextStyle(fontSize: 15.0, font: font))
+              child: Text(saveData.labelName[(i + 1).toString()], style: TextStyle(fontSize: 11.0, font: font))
             )
           )
         );
@@ -231,7 +225,7 @@ class CreatePdf {
           Padding(
               padding: EdgeInsets.only(top: 20, right: 10),
               child: Container(
-                  width: 60,
+                  width: 50,
                   height: 28,
               )
           )
@@ -243,7 +237,7 @@ class CreatePdf {
               builder: (context) {
                 return Expanded(
                   child: Container(
-                      child: buildColumn(width: 120, height: 7, barNumber: i, saveData: saveData, font: font)
+                      child: buildColumn(width: 130, height: 7, barNumber: i, saveData: saveData, font: font)
                   ),
                 );
               }

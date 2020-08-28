@@ -101,18 +101,18 @@ class _AddPdfPageState extends State<AddPdfPage> {
                       content: Text('入力内容は保存されません。'),
                       actions: <Widget>[
                         CupertinoDialogAction(
+                          child: Text('キャンセル', style: TextStyle(color: Colors.red),),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        CupertinoDialogAction(
                           child: Text('OK'),
                           onPressed: () {
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },
                         ),
-                        CupertinoDialogAction(
-                          child: Text('キャンセル', style: TextStyle(color: Colors.red),),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
                       ],
                     );
                   }
@@ -289,11 +289,35 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   }
                 );
               } else {
-                makeList();
-                createMusic(widget.isNew);
-                String _filePath = await CreatePdf.createPdfA4(_saveData);
-                await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
-                _saveData = SaveData();
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text('PDFを作成しますか？'),
+                      content: Text('編集はTopページからのみとなります'),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: Text('キャンセル', style: TextStyle(color: Colors.red),),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () async{
+                            makeList();
+                            createMusic(widget.isNew);
+                            String _filePath = await CreatePdf.createPdfA4(_saveData);
+                            while(Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            }
+                            await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                );
               }
             },
           ),

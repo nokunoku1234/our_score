@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> {
             content: Text('削除すると復元できません。'),
             actions: <Widget>[
               CupertinoActionSheetAction(
-                child: Text('キャンセル'),
+                child: Text('キャンセル', style: TextStyle(color: Colors.red),),
                 onPressed: () {
                   Navigator.pop(context);
                   print('==================キャンセルしました');

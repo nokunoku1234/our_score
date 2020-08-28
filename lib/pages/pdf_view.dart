@@ -34,6 +34,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
             )
           ),
         ),
+        leading: Container(),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.home),

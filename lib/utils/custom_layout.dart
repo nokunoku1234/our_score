@@ -65,25 +65,25 @@ class _KeyBoardState extends State<KeyBoard> {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.GDiatonic];
         } else if(widget.whichKey == 'D' || widget.whichKey == 'Bm') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.DDiatonic];
-        } else if(widget.whichKey == 'A' || widget.whichKey == 'F#m') {
+        } else if(widget.whichKey == 'A' || widget.whichKey == 'F♯m') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.ADiatonic];
-        } else if(widget.whichKey == 'E' || widget.whichKey == 'C#m') {
+        } else if(widget.whichKey == 'E' || widget.whichKey == 'C♯m') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.EDiatonic];
-        } else if(widget.whichKey == 'B' || widget.whichKey == 'G#m') {
+        } else if(widget.whichKey == 'B' || widget.whichKey == 'G♯m') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.BDiatonic];
-        } else if(widget.whichKey == 'F#' || widget.whichKey == 'D#m') {
+        } else if(widget.whichKey == 'F♯' || widget.whichKey == 'D♯m') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.FsharpDiatonic];
         } else if(widget.whichKey == 'F' || widget.whichKey == 'Dm') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.FDiatonic];
-        } else if(widget.whichKey == 'Bb' || widget.whichKey == 'Gm') {
+        } else if(widget.whichKey == 'B♭' || widget.whichKey == 'Gm') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.BflatDiatonic];
-        } else if(widget.whichKey == 'Eb' || widget.whichKey == 'Cm') {
+        } else if(widget.whichKey == 'E♭' || widget.whichKey == 'Cm') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.EflatDiatonic];
-        } else if(widget.whichKey == 'Ab' || widget.whichKey == 'Fm') {
+        } else if(widget.whichKey == 'A♭' || widget.whichKey == 'Fm') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.AflatDiatonic];
-        } else if(widget.whichKey == 'Db' || widget.whichKey == 'Bbm') {
+        } else if(widget.whichKey == 'D♭' || widget.whichKey == 'B♭m') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.DflatDiatonic];
-        } else if(widget.whichKey == 'Gb' || widget.whichKey == 'Ebm') {
+        } else if(widget.whichKey == 'G♭' || widget.whichKey == 'E♭m') {
           keyBoardLayout = [VirtualKeyboardDefaultLayouts.GflatDiatonic];
         }
         break;

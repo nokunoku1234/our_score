@@ -184,14 +184,11 @@ class _HomePageState extends State<HomePage> {
       return SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: <Widget>[
-                  Flexible(child: Text(saveData.title, style: TextStyle(fontSize: 30,), softWrap: true,)),
-                ],
-              ),
+              child: Text(saveData.title, style: TextStyle(fontSize: 30,)),
             ),
             InkWell(
               child: Container(
@@ -259,7 +256,7 @@ class _HomePageState extends State<HomePage> {
             content: Text('削除すると復元できません。'),
             actions: <Widget>[
               CupertinoActionSheetAction(
-                child: Text('キャンセル'),
+                child: Text('キャンセル', style: TextStyle(color: Colors.red),),
                 onPressed: () {
                   Navigator.pop(context);
                   print('==================キャンセルしました');

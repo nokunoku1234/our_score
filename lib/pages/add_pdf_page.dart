@@ -101,18 +101,18 @@ class _AddPdfPageState extends State<AddPdfPage> {
                       content: Text('入力内容は保存されません。'),
                       actions: <Widget>[
                         CupertinoDialogAction(
+                          child: Text('キャンセル', style: TextStyle(color: Colors.red),),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        CupertinoDialogAction(
                           child: Text('OK'),
                           onPressed: () {
                             Navigator.pop(context);
                             Navigator.pop(context);
                           },
                         ),
-                        CupertinoDialogAction(
-                          child: Text('キャンセル', style: TextStyle(color: Colors.red),),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
                       ],
                     );
                   }
@@ -289,11 +289,35 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   }
                 );
               } else {
-                makeList();
-                createMusic(widget.isNew);
-                String _filePath = await CreatePdf.createPdfA4(_saveData);
-                await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
-                _saveData = SaveData();
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text('PDFを作成しますか？'),
+                      content: Text('編集はTopページからのみとなります'),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: Text('キャンセル', style: TextStyle(color: Colors.red),),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        CupertinoDialogAction(
+                          child: Text('OK'),
+                          onPressed: () async{
+                            makeList();
+                            createMusic(widget.isNew);
+                            String _filePath = await CreatePdf.createPdfA4(_saveData);
+                            while(Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            }
+                            await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: _saveData.title, filePath: _filePath,)));
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                );
               }
             },
           ),
@@ -564,34 +588,34 @@ class _AddPdfPageState extends State<AddPdfPage> {
                             onTap: () async{
                               await showKeyBoard(whichController: 'musicKey');
                               switch(musicKeyController.text) {
-                                case 'C#':
+                                case 'C♯':
                                   musicKeyController.text = 'D♭';
                                   break;
-                                case 'A#m':
+                                case 'A♯m':
                                   musicKeyController.text = 'B♭m';
                                   break;
                                 case 'C♭':
                                   musicKeyController.text = 'B';
                                   break;
                                 case 'A♭m':
-                                  musicKeyController.text = 'G#m';
+                                  musicKeyController.text = 'G♯m';
                                   break;
-                                case 'G#':
+                                case 'G♯':
                                   musicKeyController.text = 'A♭';
                                   break;
-                                case 'E#m':
+                                case 'E♯m':
                                   musicKeyController.text = 'Fm';
                                   break;
-                                case 'D#':
+                                case 'D♯':
                                   musicKeyController.text = 'E♭';
                                   break;
-                                case 'B#':
+                                case 'B♯':
                                   musicKeyController.text = 'C';
                                   break;
-                                case 'A#':
+                                case 'A♯':
                                   musicKeyController.text = 'B♭';
                                   break;
-                                case 'E#':
+                                case 'E♯':
                                   musicKeyController.text = 'F';
                                   break;
                               }
@@ -740,7 +764,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                     readOnly: true,
                     textAlignVertical: TextAlignVertical.bottom,
                     enabled: true,
-                    style: TextStyle(fontSize: fontSize),
+                    style: TextStyle(fontSize: 11),
 //                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'firstChord_$scoreMode', i: barNumber);
@@ -763,7 +787,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
                   child: TextField(
                     readOnly: true,
                     textAlignVertical: TextAlignVertical.bottom,
-                    style: TextStyle(fontSize: fontSize),
+                    style: TextStyle(fontSize: 11),
 //                    focusNode: AlwaysDisabledFocusNode(),
                     onTap: () async{
                       await showKeyBoard(whichController: 'laterChord_$scoreMode', i: barNumber);

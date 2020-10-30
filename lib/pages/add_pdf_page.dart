@@ -708,13 +708,27 @@ class _AddPdfPageState extends State<AddPdfPage> {
             builder: (context) {
               return Expanded(
                 child: Container(
-                  child: buildColumn(width: 100, height: 7, barNumber: i),
+                  child: buildColumn(width: 100, height: 7, barNumber: i, isLast: (i == barList.length - 1) ? true : false, isEnter: (i + 1) % numberOfRow == 0 ? true : false),
                 ),
               );
             },
           )
         );
       } else {
+        if(blankBarList.contains(i - 1) == false) {
+          _listCache.removeLast();
+          _listCache.add(
+              Builder(
+                builder: (context) {
+                  return Expanded(
+                    child: Container(
+                      child: buildColumn(width: 100, height: 7, barNumber: i, isLast: (i == barList.length - 1) ? true : false, isEnter: true),
+                    ),
+                  );
+                },
+              )
+          );
+        }
         _listCache.add(
           Builder(
             builder: (context) {
@@ -749,7 +763,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
-  Column buildColumn({double width, double height, int barNumber}) {
+  Column buildColumn({double width, double height, int barNumber, bool isLast, bool isEnter}) {
     return Column(
       children: <Widget>[
         Row(
@@ -802,56 +816,147 @@ class _AddPdfPageState extends State<AddPdfPage> {
             ),
           ],
         ),
-        Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(),
-              right: BorderSide(),
-              bottom: BorderSide(),
-              left: BorderSide(),
-            ),
-          ),
-        ),
-        Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            border: Border(
-              right: BorderSide(),
-              bottom: BorderSide(),
-              left: BorderSide(),
-            ),
-          ),
-        ),
-        Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            border: Border(
-              right: BorderSide(),
-              bottom: BorderSide(),
-              left: BorderSide(),
-            ),
-          ),
-        ),
-        Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            border: Border(
-              right: BorderSide(),
-              bottom: BorderSide(),
-              left: BorderSide(),
-            ),
-          ),
-        ),
+        isLast ? buildLastBar(width, height) : buildBar(width, height, isEnter),
         Padding(
           padding: EdgeInsets.only(bottom: 40.0),
         ),
       ],
     );
+  }
+
+  Widget buildBar(double width, double height, bool isEnter) {
+    return Column(
+      children: [
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            border: isEnter
+                ? Border(
+              top: BorderSide(),
+              right: BorderSide(),
+              bottom: BorderSide(),
+              left: BorderSide(),
+            )
+                : Border(
+              top: BorderSide(),
+              bottom: BorderSide(),
+              left: BorderSide(),
+            ),
+          ),
+        ),
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            border: isEnter
+                ? Border(
+              right: BorderSide(),
+              bottom: BorderSide(),
+              left: BorderSide(),
+            )
+                : Border(
+              bottom: BorderSide(),
+              left: BorderSide(),
+            ),
+          ),
+        ),
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            border: isEnter
+                ? Border(
+              right: BorderSide(),
+              bottom: BorderSide(),
+              left: BorderSide(),
+            )
+                : Border(
+              bottom: BorderSide(),
+              left: BorderSide(),
+            ),
+          ),
+        ),
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            border: isEnter
+                ? Border(
+              right: BorderSide(),
+              bottom: BorderSide(),
+              left: BorderSide(),
+            )
+                : Border(
+              bottom: BorderSide(),
+              left: BorderSide(),
+            ),
+          ),
+        ),
+      ],
+    );
+
+  }
+
+  Widget buildLastBar(double width, double height) {
+    return Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Column(
+            children: [
+              Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(),
+                    right: BorderSide(width: 3),
+                    bottom: BorderSide(),
+                    left: BorderSide(),
+                  )
+                ),
+              ),
+              Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(width: 3),
+                    bottom: BorderSide(),
+                    left: BorderSide(),
+                  )
+                ),
+              ),
+              Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(width: 3),
+                    bottom: BorderSide(),
+                    left: BorderSide(),
+                  )
+                ),
+              ),
+              Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                  border: Border(
+                    right: BorderSide(width: 3),
+                    bottom: BorderSide(),
+                    left: BorderSide(),
+                  )
+                ),
+              ),
+            ],
+          ),
+          Container(
+            height: 28,
+            child: VerticalDivider(thickness: 1, color: Colors.black, width: 10,)
+          )
+        ],
+      );
   }
 
 }

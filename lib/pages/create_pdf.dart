@@ -75,7 +75,156 @@ class CreatePdf {
     return _filePath;
   }
 
-  static Column buildColumn({double width, double height, int barNumber, SaveData saveData, font}) {
+  static Widget buildLastBar({double width, double height, int barNumber, SaveData saveData, font}) {
+    return Column(
+        children: [
+          Container(
+            width: width,
+            height: 20,
+            child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: width / 2,
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 10, font: font))
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: width / 2,
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 10, font: font))
+                      ),
+                    ),
+                  ),
+                ]
+            ),
+          ),
+          Row(
+            children: [
+              Column(
+                  children: [
+                    Container(
+                      width: width - 6,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: width - 6,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: width - 6,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: width - 6,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                  ]
+              ),
+              Column(
+                  children: [
+                    Container(
+                      width: 3,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 3,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 3,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 3,
+                      height: height,
+                      decoration: BoxDecoration(
+                        border: BoxBorder(
+                          top: true,
+                          right: true,
+                          bottom: true,
+                          left: true,
+                        ),
+                      ),
+                    ),
+                  ]
+              ),
+              Container(
+                width: 3,
+                height: height * 4 + 1,
+                color: PdfColor.fromHex('000000')
+              )
+            ]
+          ),
+        ]
+    );
+  }
+
+
+  static Widget buildColumn({double width, double height, int barNumber, SaveData saveData, font}) {
     return Column(
           children: [
             Container(
@@ -237,7 +386,7 @@ class CreatePdf {
               builder: (context) {
                 return Expanded(
                   child: Container(
-                      child: buildColumn(width: 130, height: 7, barNumber: i, saveData: saveData, font: font)
+                      child: (i == saveData.barNumber - 1) ? buildLastBar(width: 130, height: 7, barNumber: i, saveData: saveData, font: font) : buildColumn(width: 130, height: 7, barNumber: i, saveData: saveData, font: font)
                   ),
                 );
               }

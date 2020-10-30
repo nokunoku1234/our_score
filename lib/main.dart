@@ -120,14 +120,20 @@ class _HomePageState extends State<HomePage> {
                           title: Text(dbData[i].title),
                         ),
                       ),
-                      onLongPress: () async{
+                      onTap: () async{
                         String _filePath = await CreatePdf.createPdfA4(dbData[i]);
                         await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: dbData[i].title, filePath: _filePath)));
                         setDb();
                       },
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PlayMusicPage(), fullscreenDialog: true));
-                      },
+
+                      // onLongPress: () async{
+                      //   String _filePath = await CreatePdf.createPdfA4(dbData[i]);
+                      //   await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: dbData[i].title, filePath: _filePath)));
+                      //   setDb();
+                      // },
+                      // onTap: () {
+                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => PlayMusicPage(), fullscreenDialog: true));
+                      // },
 
                     ),
                   ),

@@ -821,7 +821,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
             ),
           ],
         ),
-        makeBar(width: width, height: height, isEnter: isEnter, i: barNumber),
+        makeBar(width: width, height: height, isEnter: isEnter, i: barNumber, isNew: widget.isNew),
         Padding(
           padding: EdgeInsets.only(bottom: 40.0),
         ),
@@ -829,7 +829,7 @@ class _AddPdfPageState extends State<AddPdfPage> {
     );
   }
 
-  Widget makeBar({int i, double width, double height, bool isEnter}) {
+  Widget makeBar({int i, double width, double height, bool isEnter, bool isNew}) {
     print(i);
 
     if(i == barList.length - 1) {
@@ -839,35 +839,66 @@ class _AddPdfPageState extends State<AddPdfPage> {
       switch((i + 1) % numberOfRow) {
         case 1:
           print('1小節目');
-          if(labelControllerList[i + 4].text != '' || widget.dbData.labelName[(i + 5).toString()] != null) {
-            return buildBorderBar(width: width, height: height, isEnd: false);
+          if(isNew) {
+            if (labelControllerList[i + 4].text != '') {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           } else {
-            return buildBar(width, height, isEnter);
+            if (labelControllerList[i + 4].text != '' || widget.dbData.labelName[(i + 5).toString()] != null) {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           }
           break;
         case 2:
           print('2小節目');
-          print(widget.dbData.labelName[(i + 4).toString()]);
-          if(labelControllerList[i + 3].text != '' || widget.dbData.labelName[(i + 4).toString()] != null) {
-            return buildBorderBar(width: width, height: height, isEnd: false);
+          if(isNew) {
+            if (labelControllerList[i + 3].text != '') {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           } else {
-            return buildBar(width, height, isEnter);
+            if (labelControllerList[i + 3].text != '' || widget.dbData.labelName[(i + 4).toString()] != null) {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           }
           break;
         case 3:
           print('3小節目');
-          if(labelControllerList[i + 2].text != '' || widget.dbData.labelName[(i + 3).toString()] != null) {
-            return buildBorderBar(width: width, height: height, isEnd: false);
+          if(isNew) {
+            if (labelControllerList[i + 2].text != '') {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           } else {
-            return buildBar(width, height, isEnter);
+            if (labelControllerList[i + 2].text != '' || widget.dbData.labelName[(i + 3).toString()] != null) {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           }
           break;
         default:
           print('4小節目');
-          if(labelControllerList[i + 1].text != '' || widget.dbData.labelName[(i + 2).toString()] != null) {
-            return buildBorderBar(width: width, height: height, isEnd: false);
+          if(isNew) {
+            if (labelControllerList[i + 1].text != '') {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           } else {
-            return buildBar(width, height, isEnter);
+            if (labelControllerList[i + 1].text != '' || widget.dbData.labelName[(i + 2).toString()] != null) {
+              return buildBorderBar(width: width, height: height, isEnd: false);
+            } else {
+              return buildBar(width, height, isEnter);
+            }
           }
           break;
       }

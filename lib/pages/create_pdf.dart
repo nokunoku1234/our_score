@@ -223,6 +223,149 @@ class CreatePdf {
     );
   }
 
+  static Widget buildDoubleVerticalBar({double width, double height, int barNumber, SaveData saveData, font}) {
+    return Column(
+        children: [
+          Container(
+            width: width,
+            height: 20,
+            child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: width / 2,
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(saveData.firstChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 10, font: font))
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      width: width / 2,
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(saveData.laterChord[(barNumber + 1).toString()], style: TextStyle(fontSize: 10, font: font))
+                      ),
+                    ),
+                  ),
+                ]
+            ),
+          ),
+          Row(
+              children: [
+                Column(
+                    children: [
+                      Container(
+                        width: width - 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: width - 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: width - 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: width - 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                    ]
+                ),
+                Column(
+                    children: [
+                      Container(
+                        width: 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 6,
+                        height: height,
+                        decoration: BoxDecoration(
+                          border: BoxBorder(
+                            top: true,
+                            right: true,
+                            bottom: true,
+                            left: true,
+                          ),
+                        ),
+                      ),
+                    ]
+                ),
+              ]
+          ),
+        ]
+    );
+  }
+
 
   static Widget buildColumn({double width, double height, int barNumber, SaveData saveData, font}) {
     return Column(
@@ -386,7 +529,7 @@ class CreatePdf {
               builder: (context) {
                 return Expanded(
                   child: Container(
-                      child: (i == saveData.barNumber - 1) ? buildLastBar(width: 130, height: 7, barNumber: i, saveData: saveData, font: font) : buildColumn(width: 130, height: 7, barNumber: i, saveData: saveData, font: font)
+                      child: (i == saveData.barNumber - 1) ? buildLastBar(width: 130, height: 7, barNumber: i, saveData: saveData, font: font) : selectBar(font: font, saveData: saveData, i: i, height: 7, width: 130, blankBarNumber: blankBarNumber)
                   ),
                 );
               }
@@ -417,6 +560,50 @@ class CreatePdf {
       }
     }
     return Column(children: _listColumn);
+  }
+
+  static Widget selectBar({int i, SaveData saveData, double width, double height, font, List<int> blankBarNumber}) {
+    print(i);
+    switch((i + 1) % 4) {
+      case 1:
+        print('1小節目');
+        if(saveData.labelName[(i + 5).toString()] != '' && blankBarNumber.contains(i + 1)) {
+          print('複縦線');
+          return buildDoubleVerticalBar(width: width, height: height, font: font, barNumber: i, saveData: saveData);
+        } else {
+          return buildColumn(width: width, height: height, saveData: saveData, barNumber: i, font: font);
+        }
+        break;
+      case 2:
+        print('2小節目');
+        print(saveData.labelName[(i + 4).toString()]);
+        if(saveData.labelName[(i + 4).toString()] != '' && blankBarNumber.contains(i + 1)) {
+          print('複縦線');
+          return buildDoubleVerticalBar(width: width, height: height, font: font, barNumber: i, saveData: saveData);
+        } else {
+          return buildColumn(width: width, height: height, saveData: saveData, barNumber: i, font: font);
+        }
+        break;
+      case 3:
+        print('3小節目');
+        if(saveData.labelName[(i + 3).toString()] != '' && blankBarNumber.contains(i + 1)) {
+          print('複縦線');
+          return buildDoubleVerticalBar(width: width, height: height, font: font, barNumber: i, saveData: saveData);
+        } else {
+          return buildColumn(width: width, height: height, saveData: saveData, barNumber: i, font: font);
+        }
+        break;
+      default:
+        print('4小節目');
+        if(saveData.labelName[(i + 2).toString()] != '') {
+          print('複縦線');
+          return buildDoubleVerticalBar(width: width, height: height, font: font, barNumber: i, saveData: saveData);
+        } else {
+          return buildColumn(width: width, height: height, saveData: saveData, barNumber: i, font: font);
+        }
+        break;
+    }
+
   }
 
 }

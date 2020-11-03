@@ -821,12 +821,59 @@ class _AddPdfPageState extends State<AddPdfPage> {
             ),
           ],
         ),
-        isLast ? buildLastBar(width, height) : buildBar(width, height, isEnter),
+        makeBar(width: width, height: height, isEnter: isEnter, i: barNumber),
         Padding(
           padding: EdgeInsets.only(bottom: 40.0),
         ),
       ],
     );
+  }
+
+  Widget makeBar({int i, double width, double height, bool isEnter}) {
+    print(i);
+
+    if(i == barList.length - 1) {
+      return buildBorderBar(width: width, height: height, isEnd: true);
+    } else if(isEnter == true) {
+      print('======Enter=======');
+      switch((i + 1) % numberOfRow) {
+        case 1:
+          print('1小節目');
+          if(labelControllerList[i + 4].text != '' || widget.dbData.labelName[(i + 5).toString()] != null) {
+            return buildBorderBar(width: width, height: height, isEnd: false);
+          } else {
+            return buildBar(width, height, isEnter);
+          }
+          break;
+        case 2:
+          print('2小節目');
+          print(widget.dbData.labelName[(i + 4).toString()]);
+          if(labelControllerList[i + 3].text != '' || widget.dbData.labelName[(i + 4).toString()] != null) {
+            return buildBorderBar(width: width, height: height, isEnd: false);
+          } else {
+            return buildBar(width, height, isEnter);
+          }
+          break;
+        case 3:
+          print('3小節目');
+          if(labelControllerList[i + 2].text != '' || widget.dbData.labelName[(i + 3).toString()] != null) {
+            return buildBorderBar(width: width, height: height, isEnd: false);
+          } else {
+            return buildBar(width, height, isEnter);
+          }
+          break;
+        default:
+          print('4小節目');
+          if(labelControllerList[i + 1].text != '' || widget.dbData.labelName[(i + 2).toString()] != null) {
+            return buildBorderBar(width: width, height: height, isEnd: false);
+          } else {
+            return buildBar(width, height, isEnter);
+          }
+          break;
+      }
+    } else {
+      return buildBar(width, height, isEnter);
+    }
   }
 
   Widget buildBar(double width, double height, bool isEnter) {
@@ -903,65 +950,67 @@ class _AddPdfPageState extends State<AddPdfPage> {
 
   }
 
-  Widget buildLastBar(double width, double height) {
+  Widget buildBorderBar({double width, double height, bool isEnd}) {
     return Stack(
-        alignment: Alignment.topRight,
-        children: [
-          Column(
-            children: [
-              Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(),
-                    right: BorderSide(width: 3),
-                    bottom: BorderSide(),
-                    left: BorderSide(),
-                  )
-                ),
+      alignment: Alignment.topRight,
+      children: [
+        Column(
+          children: [
+            Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(),
+                  right: isEnd ? BorderSide(width: 3) : BorderSide(),
+                  bottom: BorderSide(),
+                  left: BorderSide(),
+                )
               ),
-              Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(width: 3),
-                    bottom: BorderSide(),
-                    left: BorderSide(),
-                  )
-                ),
+            ),
+            Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: isEnd ? BorderSide(width: 3) : BorderSide(),
+                  bottom: BorderSide(),
+                  left: BorderSide(),
+                )
               ),
-              Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(width: 3),
-                    bottom: BorderSide(),
-                    left: BorderSide(),
-                  )
-                ),
+            ),
+            Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: isEnd ? BorderSide(width: 3) : BorderSide(),
+                  bottom: BorderSide(),
+                  left: BorderSide(),
+                )
               ),
-              Container(
-                width: width,
-                height: height,
-                decoration: BoxDecoration(
-                  border: Border(
-                    right: BorderSide(width: 3),
-                    bottom: BorderSide(),
-                    left: BorderSide(),
-                  )
-                ),
+            ),
+            Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: isEnd ? BorderSide(width: 3) : BorderSide(),
+                  bottom: BorderSide(),
+                  left: BorderSide(),
+                )
               ),
-            ],
-          ),
-          Container(
-            height: 28,
-            child: VerticalDivider(thickness: 1, color: Colors.black, width: 10,)
-          )
-        ],
-      );
+            ),
+          ],
+        ),
+        Container(
+          height: 28,
+          child: VerticalDivider(thickness: 1, color: Colors.black, width: 10,)
+        )
+      ],
+    );
   }
+  
+  
 
 }

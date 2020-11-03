@@ -703,32 +703,37 @@ class _AddPdfPageState extends State<AddPdfPage> {
         );
       }
       if(blankBarList.contains(i) == false) {
-        _listCache.add(
-            Builder(
-            builder: (context) {
-              return Expanded(
-                child: Container(
-                  child: buildColumn(width: 100, height: 7, barNumber: i, isLast: (i == barList.length - 1) ? true : false, isEnter: (i + 1) % numberOfRow == 0 ? true : false),
-                ),
-              );
-            },
-          )
-        );
-      } else {
-        if(blankBarList.contains(i - 1) == false) {
-          _listCache.removeLast();
+        ///改行されていたら小節の右側に線を表示
+        if(blankBarList.contains(i + 1) == true) {
+            _listCache.add(
+                Builder(
+                  builder: (context) {
+                    return Expanded(
+                      child: Container(
+                        child: buildColumn(width: 100, height: 7, barNumber: i, isLast: (i == barList.length - 1) ? true : false, isEnter: true),
+                      ),
+                    );
+                  },
+                )
+            );
+        } else {
           _listCache.add(
               Builder(
                 builder: (context) {
                   return Expanded(
                     child: Container(
-                      child: buildColumn(width: 100, height: 7, barNumber: i, isLast: (i == barList.length - 1) ? true : false, isEnter: true),
+                      child: buildColumn(width: 100,
+                          height: 7,
+                          barNumber: i,
+                          isLast: (i == barList.length - 1) ? true : false,
+                          isEnter: (i + 1) % numberOfRow == 0 ? true : false),
                     ),
                   );
                 },
               )
           );
         }
+      } else {
         _listCache.add(
           Builder(
             builder: (context) {

@@ -1,19 +1,21 @@
 import 'dart:io';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:simple_resumaker/pages/add_pdf_page.dart';
 import 'package:simple_resumaker/pages/create_pdf.dart';
 import 'package:simple_resumaker/pages/pdf_view.dart';
+import 'package:simple_resumaker/pages/play_music/play_music.dart';
 import 'package:simple_resumaker/pages/splash_screen.dart';
 import 'package:simple_resumaker/utils/admob.dart';
 import 'package:simple_resumaker/utils/db_provider.dart';
 
 import 'model/model.dart';
 
-void main() => runApp(MyApp());
-Color primaryColor = Colors.blue;
+void main() => runApp(ProviderScope(child: MyApp()));
 List<SaveData> dbData = [];
 
 class MyApp extends StatelessWidget {
@@ -108,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                       child: Container(
                         margin: EdgeInsets.all(5.0),
                         child: ListTile(
-                          leading: Container(height: double.infinity, child: Icon(Icons.queue_music, color: primaryColor,)),
+                          leading: Container(height: double.infinity, child: Icon(Icons.queue_music, color: Theme.of(context).primaryColor,)),
                           trailing: IconButton(
                             icon: Icon(Icons.more_vert),
                             onPressed: () async{
@@ -123,6 +125,15 @@ class _HomePageState extends State<HomePage> {
                         await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: dbData[i].title, filePath: _filePath)));
                         setDb();
                       },
+
+                      // onLongPress: () async{
+                      //   String _filePath = await CreatePdf.createPdfA4(dbData[i]);
+                      //   await Navigator.push(context, MaterialPageRoute(builder: (context) => PdfViewPage(title: dbData[i].title, filePath: _filePath)));
+                      //   setDb();
+                      // },
+                      // onTap: () {
+                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => PlayMusicPage(), fullscreenDialog: true));
+                      // },
 
                     ),
                   ),
@@ -151,7 +162,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.white,
 //        splashColor: Colors.purple,
           shape: StadiumBorder(
-            side: BorderSide(color: primaryColor)
+            side: BorderSide(color: Theme.of(context).primaryColor)
           ),
           onPressed: () async{
             await Navigator.push(context, MaterialPageRoute(builder: (context) => AddPdfPage(isNew: true)));
@@ -195,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                 height: 70,
                 alignment: Alignment.center,
                 child: ListTile(
-                  leading: Icon(Icons.share, color: primaryColor,),
+                  leading: Icon(Icons.share, color: Theme.of(context).primaryColor,),
                   title: Text('共有'),
                 ),
               ),
@@ -214,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                 height: 70,
                 alignment: Alignment.center,
                 child: ListTile(
-                  leading: Icon(Icons.edit, color: primaryColor,),
+                  leading: Icon(Icons.edit, color: Theme.of(context).primaryColor,),
                   title: Text('編集'),
                 ),
               ),
@@ -230,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                 height: 70,
                 alignment: Alignment.center,
                 child: ListTile(
-                  leading: Icon(Icons.delete, color: primaryColor,),
+                  leading: Icon(Icons.delete, color: Theme.of(context).primaryColor,),
                   title: Text('削除'),
                 ),
               ),
